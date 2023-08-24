@@ -1,8 +1,6 @@
 
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+
+
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -11,20 +9,14 @@ import CardGroup from 'react-bootstrap/CardGroup';
 import React from "react";
 import logo from '../../../logo.svg';
 import { useRef } from 'react';
-import {
-    MDBFooter,
-    MDBContainer,
-    MDBIcon,
-    MDBInput,
-    MDBCol,
-    MDBRow,
-    MDBBtn
-  } from 'mdb-react-ui-kit';
+
 
 import "./index.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'mdbreact/dist/css/mdb.css';
+import NavBar from '../../molecule/NavBar';
+import Footer from '../../molecule/Footer';
 
 let Home = (props) => {
     const ref = useRef(null);
@@ -35,32 +27,10 @@ let Home = (props) => {
 
     return (
         <>
-
+        <NavBar></NavBar>
         <div>
             
-        <Navbar collapseOnSelect
-                expand="lg"
-                className="bg-body-tertiary fixed-navbar">
-      <Container>
-        <Navbar.Brand href="#home">
-        <img src="https://www.amartek.id/i/logo/weblogo-amartek.png" height="40"/>
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className='justify-content-end' style={{ width: "100%" }}>
-            <Nav.Link href="https://www.amartek.id/">
-                <button type="button" class="btn btn-outline-primary btn-sm">About Us</button>
-            </Nav.Link>
-            <Nav.Link href="login">
-                <button type="button" class="btn btn-outline-success btn-sm">Login</button>
-            </Nav.Link>
-            <Nav.Link href="home">
-                <img src="https://cdn-icons-png.flaticon.com/512/74/74807.png" width="32" height="32" style={{marginTop: "12%", marginLeft: "30%"}} />
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+       
     </div>
 
       <div name="mainpage" style={{backgroundImage: 'url("https://images.unsplash.com/photo-1623479322729-28b25c16b011?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHByb2dyYW1tZXJ8ZW58MHx8MHx8fDA%3D&w=1000&q=80")', backgroundSize: "contain", backgroundSize: "100%", backgroundPositionY: "50%", textAlign: "center", color: "white", width: "100%", height: "50vh"}}>
@@ -111,64 +81,7 @@ let Home = (props) => {
         </h1>
         </div>
         <div style={{position: "relative", bottom: "0", width: "100%"}}>
-        <MDBFooter bgColor='light' className='text-center text-lg-left'>
-        <MDBContainer className='p-4'>
-          <MDBRow>
-            <MDBCol lg='6' md='12' className='mb-4 mb-md-0'>
-              <h5 className='text-uppercase' style={{color: "black", textAlign: "left"}}>Bumi Amartha Teknologi Mandiri</h5>
-
-              <p style={{color: "black", textAlign: "justify", fontSize: "90%"}}>
-              PT. Bumi Amartha Teknologi Mandiri (AMARTEK) is a system integrator devoted to offering the highest value to our customers. Amartek provides domain and advisory expertise which comes with Data & Analytics, Outcome based Services, Integration & Automation, Talent Augmentation. Amartek was established in 2018 with the purpose of delivering a large stack of IT services globally.
-              </p>
-            </MDBCol>
-
-          <MDBCol lg='3' md='12' className='mb-4 mb-md-0'>
-            <h5 className='text-uppercase' style={{color: "black", textAlign: "left"}}>About Us</h5>
-            <ul className='list-unstyled mb-0' style={{color: "black", textAlign: "left"}}>
-                <li>
-                  <a style={{textDecoration: "None"}} href='https://www.amartek.id/about/overview' className='text-dark'>
-                    Company Overview
-                  </a>
-                </li>
-                <li>
-                  <a style={{textDecoration: "None"}} href='https://www.amartek.id/about/ceo-notes' className='text-dark'>
-                    CEO Notes
-                  </a>
-                </li>
-                <li>
-                  <a style={{textDecoration: "None"}} href='https://www.amartek.id/about/people' className='text-dark'>
-                    Executive Profiles
-                  </a>
-                </li>
-              </ul>
-          </MDBCol>
-
-          <MDBCol lg='3' md='12' className='mb-4 mb-md-0'>
-          <h5 className='text-uppercase' style={{color: "black", textAlign: "left"}}>Contact</h5>
-          <div>
-          <p style={{color: "black", textAlign: "left"}}>
-                <MDBIcon icon="home" className="me-2" />
-                Chase Plaza 9th Floor, Jl Jend. Sudirman Kav 21, Karet, Setiabudi, Jakarta Selatan 12920. Indonesia
-              </p>
-              <p style={{color: "black", textAlign: "left"}}>
-                <MDBIcon icon="envelope" className="me-3" />
-                  sales@batmandiri.com
-              </p>
-              <p style={{color: "black", textAlign: "left"}}>
-                <MDBIcon icon="phone" className="me-3" /> +62 21 3973 7000
-              </p>
-        </div>
-            </MDBCol>
-        </MDBRow>
-      </MDBContainer>
-
-      <div className='text-center p-3' style={{ backgroundColor: 'black' }}>
-        &copy; {new Date().getFullYear()} Copyright:{' '}
-        <a className='text-white' href='https://www.amartek.id/'>
-          AMARTEK
-        </a>
-      </div>
-    </MDBFooter>
+        <Footer></Footer>
       </div>
       </div>
       
