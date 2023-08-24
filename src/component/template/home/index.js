@@ -15,8 +15,8 @@ import "./index.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'mdbreact/dist/css/mdb.css';
-import NavBar from '../../molecule/NavBar';
-import Footer from '../../molecule/Footer';
+import NavBar from '../../organism/NavBar';
+import Footer from '../../organism/Footer';
 
 let Home = (props) => {
     const ref = useRef(null);
