@@ -4,13 +4,15 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
 import React from "react";
 import logo from '../../../logo.svg';
-import { useRef } from 'react';
+import Swal from "sweetalert2";
+import { useRef, useState } from 'react';
 import {
     MDBFooter,
     MDBContainer,
@@ -28,7 +30,9 @@ import 'mdbreact/dist/css/mdb.css';
 
 let Home = (props) => {
     const ref = useRef(null);
-
+    const [ show, setShow ] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
     const handleClick = () => {
         ref.current?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -42,17 +46,17 @@ let Home = (props) => {
                 expand="lg"
                 className="bg-body-tertiary fixed-navbar">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/home">
         <img src="https://www.amartek.id/i/logo/weblogo-amartek.png" height="40"/>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className='justify-content-end' style={{ width: "100%" }}>
             <Nav.Link href="https://www.amartek.id/">
-                <button type="button" class="btn btn-outline-primary btn-sm">About Us</button>
+                <button type="button" class="btn btn-outline-primary btn-sm"><b>About Us</b></button>
             </Nav.Link>
-            <Nav.Link href="login">
-                <button type="button" class="btn btn-outline-success btn-sm">Login</button>
+            <Nav.Link href="">
+                <button type="button" onClick={handleShow} class="btn btn-outline-success btn-sm"><b>Login</b></button>
             </Nav.Link>
             <Nav.Link href="home">
                 <img src="https://cdn-icons-png.flaticon.com/512/74/74807.png" width="32" height="32" style={{marginTop: "12%", marginLeft: "30%"}} />
@@ -65,10 +69,10 @@ let Home = (props) => {
 
       <div name="mainpage" style={{backgroundImage: 'url("https://images.unsplash.com/photo-1623479322729-28b25c16b011?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHByb2dyYW1tZXJ8ZW58MHx8MHx8fDA%3D&w=1000&q=80")', backgroundSize: "contain", backgroundSize: "100%", backgroundPositionY: "50%", textAlign: "center", color: "white", width: "100%", height: "50vh"}}>
         <div style={{paddingTop: "7%"}}>
-        <h1 style={{textShadow: "0px 0px 30px white"}}>AMARTEK CODE TEST</h1>
+        <h1 style={{textShadow: "0px 0px 20px white"}}>AMARTEK CODE TEST</h1>
         <p>A preliminary test for IT Graduate Development Program</p>
-        <Button variant="primary" className="mr-3 btn-sm" style={{marginRight: "0.25%"}}>Take an exam</Button>
-        <Button onClick={handleClick} variant="secondary" className='btn-sm' style={{marginLeft: "0.25%"}}>Learn More</Button>
+        <Button href="/test" variant="primary" className="mr-3 btn-sm" style={{marginRight: "0.25%"}}><b>Take an exam</b></Button>
+        <Button onClick={handleClick} variant="secondary" className='btn-sm' style={{marginLeft: "0.25%"}}><b>Learn More</b></Button>
         </div>
         <div style={{paddingTop: "5.8%"}}>
         </div>
@@ -172,6 +176,24 @@ let Home = (props) => {
       </div>
       </div>
       
+
+      <Modal show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <Modal.Title><Modal.Title>
+                Login
+                </Modal.Title></Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <div>
+                <Button variant="primary" href="/admin" className='btn-sm'>
+                <b>Admin</b>
+                </Button>
+                <Button variant="secondary" className='btn-sm'>
+                <b>Test Taker</b>
+                </Button>
+                </div>
+            </Modal.Body>
+        </Modal>
         </>
     )
 }
