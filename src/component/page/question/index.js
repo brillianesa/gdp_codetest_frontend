@@ -151,7 +151,7 @@ let Question = () => {
           <Nav.Link href="/">
               <button type="button" class="btn btn-outline-success btn-sm"><b>Logout</b></button>
           </Nav.Link>
-          <Nav.Link href="home">
+          <Nav.Link href="/home">
               <img src="https://cdn-icons-png.flaticon.com/512/74/74807.png" width="32" height="32" style={{marginTop: "12%", marginLeft: "30%"}} />
           </Nav.Link>
         </Nav>
