@@ -102,7 +102,12 @@ let Admin = (props) => {
             <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
               Manage Test
             </button>
-          </NavLink>
+          </NavLink><br /><br /><br /><br />
+          <NavLink to="/home">
+          <button type="button" class="btn btn-danger btn-sm btn-block" style={{width:'70%'}}>
+            Back
+          </button>
+        </NavLink>
       </div>
       
       <div style={{width: "100%", paddingTop: "9%", paddingLeft: "5%"}}>
