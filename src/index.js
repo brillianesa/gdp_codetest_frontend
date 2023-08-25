@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, createBrowserRouter, Route, Routes, RouterProvider } from 'react-router-dom';
 import NotFound from './component/page/error/404';
 import Home from './component/page/home';
+import Admin from './component/page/admin';
+import Question from './component/page/question';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,6 +18,8 @@ root.render(
   <BrowserRouter>
       <Routes>
         <Route path="/home" element={<Home/>}/>
+        <Route path="/admin" element={<Admin/>}/>
+        <Route path="/admin/question" element={<Question/>}/>
         <Route index element={<Home/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
