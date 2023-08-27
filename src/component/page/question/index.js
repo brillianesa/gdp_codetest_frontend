@@ -162,7 +162,7 @@ let Question = () => {
   <div style={{width: "100%", height: "100%", display: "flex",  position: "absolute"}}>
     <div style={{width: "30%", height: "100%", paddingTop: "9%", paddingBottom: "1%", backgroundImage: "linear-gradient(grey 44.5%, white 40%, #bfbfbf 100%)", boxShadow: "0px 0px 10px black", textAlign: "center"}}>
       <img src='https://p7.hiclipart.com/preview/355/848/997/computer-icons-user-profile-google-account-photos-icon-account.jpg' class="rounded-circle center" width="100" height="100"/>
-      <h4 style={{color: "white", paddingTop: "2%", paddingBottom: "6%"}}><b>{adminData.fullname}</b></h4>
+      <h4 style={{color: "white", paddingTop: "2%", paddingBottom: "6%"}}><b></b></h4>
       <br />
         <NavLink to="/admin/user">
           <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
@@ -187,7 +187,7 @@ let Question = () => {
     </div>
     
     <div style={{width: "100%", paddingTop: "9%", paddingLeft: "5%"}}>
-    <h2><b>Welcome back, {adminData.fullname}!</b></h2>
+    <h2><b>Welcome back</b></h2>
     
     <div style={{display: "flex",  position: "absolute"}}>
         <br />
