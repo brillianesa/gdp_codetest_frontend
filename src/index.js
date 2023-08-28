@@ -9,6 +9,8 @@ import NotFound from './component/page/error/404';
 import Home from './component/page/home';
 import Admin from './component/page/admin';
 import Question from './component/page/question';
+import User from './component/page/user';
+import Test from './component/test';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -20,6 +22,8 @@ root.render(
         <Route path="/home" element={<Home/>}/>
         <Route path="/admin" element={<Admin/>}/>
         <Route path="/admin/question" element={<Question/>}/>
+        <Route path="/admin/user" element={<User/>}/>
+        <Route path="/admin/test" element={<Test/>}/>
         <Route index element={<Home/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
