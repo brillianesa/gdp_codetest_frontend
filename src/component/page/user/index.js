@@ -1,102 +1,140 @@
-import Container from 'react-bootstrap/Container';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import "bootstrap/dist/css/bootstrap.min.css";
+import Swal from "sweetalert2";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
-import CardGroup from 'react-bootstrap/CardGroup';
-import React from "react";
-// import logo from '../../../logo.svg';
-import Swal from "sweetalert2";
-import axios from 'axios'
-import { useRef, useState, useEffect } from 'react';
+import Container from 'react-bootstrap/Container';
 import { Route, NavLink, HashRouter } from "react-router-dom";
-import {
-    MDBFooter,
-    MDBContainer,
-    MDBIcon,
-    MDBInput,
-    MDBCol,
-    MDBRow,
-    MDBBtn
-  } from 'mdb-react-ui-kit';
 
-import "./index.css"
-import "bootstrap/dist/css/bootstrap.min.css";
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'mdbreact/dist/css/mdb.css';
-
-let User = () => {
-    const [ data, setData ] = useState([{}])
-    const [ adminData, setAdminData ] = useState([{}])
-    const [ show, setShow ] = useState(false)
-    const [ user_id, setUser_id ] = useState(0)
-    const [ test, setTest ] = useState([{}])
-    const [ fullname, setfullname ] = useState("")
-    const [ gender, setGender ] = useState("")
-    const [ phonenumber, setPhoneNumber ] = useState("")
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+const User = () => {
+    const [data, setData] = useState([]);
+    const [show, setShow] = useState(false);
+    const [id, setId] = useState(0);
+    const [email, setEmail] = useState("");
+    const [fullname, setFullname] = useState("");
+    const [dateofbirth, setDateOfBirth] = useState(null);
+    const [gender, setGender] = useState("");
+    const [iscompleted, setIsCompleted] = useState(false);
+    const [address, setAddress] = useState("");
+    const [phonenumber, setPhoneNumber] = useState("");
+    const [password, setPassword] = useState("");
+    const [account, setAccount] = useState("");
+    const [role, setRole] = useState([]);
+    const [role_id, setRoleID] = useState(0)
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
-    const adminInfo = axios.get("http://localhost:8089/api/user/1");
+    const [test, setTest] = useState([]);
+    const [ test_id, setTestID ] = useState(0);
+    const [ user, setUser ] = useState([]);
+    const [ user_id, setUserID ]= useState(0);
 
-    adminInfo.then((response) => {
-          setAdminData(response.data.data)
-      })
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    useEffect(() => {
+        axios({
+            method: "GET",
+            url: "http://localhost:8089/api/account/"
+        }).then((response) => {
+            setData(response.data.data);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
+    useEffect(() => {
+        axios({
+            method: "GET",
+            url: "http://localhost:8089/api/role/"
+        }).then((response) => {
+            setRole(response.data.data);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
+    useEffect(() => {
+        axios({
+            method: "GET",
+            url: "http://localhost:8089/api/test/"
+        }).then((response) => {
+            setTest(response.data.data);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
 
     useEffect(() => {
         axios({
             method: "GET",
             url: "http://localhost:8089/api/user/"
         }).then((response) => {
-            setData(response.data.data)
-            console.log()
-        }).catch((error)=> {
-            console.log(error)
-        })
-    }, [])
+            setUser(response.data.data);
+            console.log(response.data.data[0].test.name)
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
 
     const onSubmit = () => {
         handleClose();
 
         let requestData = {
-            "user_id" : user_id,
-            "test" : test,
+            "account_id": id,
+            "email": email,
             "fullname": fullname,
+            "dateofbirth": dateofbirth,
             "gender": gender,
-            "phonenumber": phonenumber
-        }
-        axios({
-            method: editData ? "POST" : "POST",
-            headers: {
-              'Content-Type': 'application/json',
+            "iscompleted": iscompleted,
+            "address": address,
+            "phonenumber": phonenumber,
+            "password": password,
+            "role": {
+                "role_id": role_id
             },
-            url: "http://localhost:8089/api/user/",
-            data: JSON.stringify(requestData)
-          }).then((response) => {
-            if (response.data.status === 200) {
-              setStatus(true);
+            "user": {
+                "user_id": user_id
+            },
+            "test": {
+                "test_id": test_id
             }
-          }).catch((error) => {
+                
+
+        };
+        
+
+        axios({
+            method: "POST", 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            url: "http://localhost:8089/api/account/register",
+            data: JSON.stringify(requestData)
+        }).then((response) => {
+            if (response.data.status === 200) {
+                console.log(response);
+                setStatus(true);
+            }
+        }).catch((error) => {
             console.log(error);
-          }).finally(() => {
+        }).finally(() => {
             setStatus(false);
             setEditData(null);
-          });
-    }
+        });
+    };
 
     const handleDelete = (id) => {
         Swal.fire({
-          title: "Delete Data?",
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
-          confirmButtonText: "Delete",
+          confirmButtonText: "Yes, delete it!",
         }).then((result) => {
           if (result.isConfirmed) {
             axios({
@@ -104,7 +142,7 @@ let User = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                url: "http://localhost:8089/api/user/" + id,
+                url: "http://localhost:8089/api/account/"+ id,
             }).then((response) => {
                 if(response.data.status === 200){
                     setStatus(true)
@@ -115,27 +153,53 @@ let User = () => {
                 setStatus(false)
             })
       
-            Swal.fire("Data has been deleted", "", "success");
+            Swal.fire("Deleted!", "Your data has been deleted.", "success");
           }
         });
       };
 
       const handleEdit = (rowData) => {
         setEditData(rowData);
-        setUser_id(rowData.user_id);
-        setTest(rowData.test);
-        setfullname(rowData.fullname);
-        setGender(rowData.gender);
-        setPhoneNumber(rowData.phonenumber);
+        console.log(rowData);
+        if (rowData) {
+            setId(rowData.id);
+            setFullname(rowData.fullname);
+            setEmail(rowData.email);
+            setDateOfBirth(rowData.dateofbirth);
+            setGender(rowData.gender);
+            setIsCompleted(rowData.iscompleted);
+            setAddress(rowData.address);
+            setPhoneNumber(rowData.phonenumber);
+            setPassword(rowData.setPassword);
+            setRoleID(rowData.role_id);
+            setUserID(rowData.user_id);
+            setTestID(rowData.test_id);
+        }
         handleShow();
-      }
+    };
+    
+    //   let requestData = {
+    //     "id": id,
+    //     "email": email,
+    //     "fullname": fullname,
+    //     "dateofbirth": dateofbirth,
+    //     "gender": gender,
+    //     "iscompleted": iscompleted,
+    //     "address": address,
+    //     "phonenumber": phonenumber,
+    //     "password": password,
+    //     "role": {
+    //         "role_id": role_id
+    //     }
+            
+
+    // };
+    
 
     return (
-      <>
-
-      <div>
-          
-      <Navbar collapseOnSelect
+        <>
+        <div>
+            <Navbar collapseOnSelect
               expand="lg"
               className="bg-body-tertiary fixed-navbar">
     <Container>
@@ -151,7 +215,7 @@ let User = () => {
           <Nav.Link href="/">
               <button type="button" class="btn btn-outline-success btn-sm"><b>Logout</b></button>
           </Nav.Link>
-          <Nav.Link href="home">
+          <Nav.Link href="/home">
               <img src="https://cdn-icons-png.flaticon.com/512/74/74807.png" width="32" height="32" style={{marginTop: "12%", marginLeft: "30%"}} />
           </Nav.Link>
         </Nav>
@@ -160,9 +224,9 @@ let User = () => {
   </Navbar>
   </div>
   <div style={{width: "100%", height: "100%", display: "flex",  position: "absolute"}}>
-  <div style={{width: "30%", height: "100%", paddingTop: "9%", paddingBottom: "1%", backgroundImage: "linear-gradient(grey 44.5%, white 40%, #bfbfbf 100%)", boxShadow: "0px 0px 10px black", textAlign: "center"}}>
+    <div style={{width: "30%", height: "100%", paddingTop: "9%", paddingBottom: "1%", backgroundImage: "linear-gradient(grey 44.5%, white 40%, #bfbfbf 100%)", boxShadow: "0px 0px 10px black", textAlign: "center"}}>
       <img src='https://p7.hiclipart.com/preview/355/848/997/computer-icons-user-profile-google-account-photos-icon-account.jpg' class="rounded-circle center" width="100" height="100"/>
-      <h4 style={{color: "white", paddingTop: "2%", paddingBottom: "6%"}}><b>{adminData.fullname}</b></h4>
+      <h4 style={{color: "white", paddingTop: "2%", paddingBottom: "6%"}}><b></b></h4>
       <br />
         <NavLink to="/admin/user">
           <button disabled type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
@@ -170,7 +234,7 @@ let User = () => {
           </button>
         </NavLink><br /><br />
         <NavLink to="/admin/question">
-          <button  type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
             Manage Question
           </button>
         </NavLink><br /><br />
@@ -185,75 +249,199 @@ let User = () => {
           </button>
         </NavLink>
     </div>
-    
-    <div style={{width: "100%", paddingTop: "9%", paddingLeft: "5%"}}>
-    <h2><b>Welcome back, {adminData.fullname}!</b></h2>
-    
-    <div style={{display: "flex",  position: "absolute"}}>
-        <br />
-        <br />
-        <table className="table">
-            <thead>
-                <th>User ID</th>
-                <th>Test ID</th>
-                <th>User Detail</th>
-                <th>Gender</th>
-                <th>PhoneNumber</th>
-                <th><button onClick={handleShow}>Create</button></th>
-            </thead>
-            <tbody>
-                {data.map(x => {
-                    return (
-                        <tr key={x.user_id}>
-                          <td>{x.user_id}</td>
-                          <td>{x?.test?.test_id}</td>
-                            <td>{x.fullname}</td>
-                            <td>{x.gender}</td>
-                            <td>{x.phonenumber}</td>
-                            <td><button onClick={() => handleEdit(x)}>Edit</button> <button onClick={() => handleDelete(x.user_id)}>Delete</button></td>
+            <button onClick={handleShow}>CREATE</button>
+            <table className="table">
+                <thead>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Fullname</th>
+                    <th>Date of Birth</th>
+                    <th>Gender</th>
+                    <th>isCompleted</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
+                    <th>Role</th>
+                    <th>Test Package</th>
+                    <th>ACTION</th>
+                </thead>
+                <tbody>
+                    {data.map(account => (
+                        <tr key={account.id}>
+                            <td>{account.id}</td>
+                            <td>{account.email}</td>
+                            <td>{account.password}</td>
+                            <td>{account.fullname}</td>
+                            <td>{account.dateofbirth}</td>
+                            <td>{account.gender}</td>
+                            <td>{account.iscompleted}</td>
+                            <td>{account.address}</td>
+                            <td>{account.phonenumber}</td>
+                            <td>{account.role.name}</td>
+                            <td>{account.user?.test?.name}</td>
+                            
+                            <td>
+                                <button onClick={() => handleEdit(account)}>Edit</button> | 
+                                <button onClick={() => handleDelete(account.id)}>Delete</button>
+                            </td>
                         </tr>
-                    )
-                })}
-            </tbody>
-        </table>
-        
-        <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-                <Modal.Title><Modal.Title>
-                {editData ? "Edit User" : "Create User"}
-                </Modal.Title></Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <div>
-                <input placeholder="User ID" value = {user_id} type="text" id="user_id" name="user_id" onChange={e => setUser_id(e.target.value)}/>
-                </div><br />
-                <div>
-                <input placeholder="Test ID" value = {test?.test_id} type="text" id="test" name="test" onChange={e => setTest(e.target.value)}/>
-                </div><br />
-                <div>
-                <input placeholder="Detail" value = {fullname} type="text" id="fullname" name="fullname" onChange={e => setfullname(e.target.value)}/>
-                </div><br />
-                <div>
-                <input placeholder="Answer" value = {gender} type="text" id="gender" name="gender" onChange={e => setGender(e.target.value)}/>
-                </div><br />
-                <div>
-                <input placeholder="PhoneNumber Link" value = {phonenumber} type="text" id="phonenumber" name="phonenumber" onChange={e => setPhoneNumber(e.target.value)}/>
-                </div>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="primary" class="btn btn-primary btn-sm" onClick={onSubmit}>
-                Save
-                </Button>
-                <Button variant="secondary" class="btn btn-secondary btn-sm" onClick={handleClose}>
-                Close
-                </Button>
-            </Modal.Footer>
-        </Modal>
-      </div>
-    </div>
-  </div>
-      </>
-    )
-}
+                    ))}
+                </tbody>
+            </table>
+
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        {editData ? "Edit User" : "Create User"}
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div>
+                        <label htmlFor="email">Email :</label>
+                        <input
+                            value={email}
+                            type="email"
+                            id="email"
+                            name="email"
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="password">Password :</label>
+                        <input
+                            value={password}
+                            type="password"
+                            id="password"
+                            name="password"
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="fullname">Fullname :</label>
+                        <input
+                            value={fullname}
+                            type="text"
+                            id="fullname"
+                            name="fullname"
+                            onChange={(e) => setFullname(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="dateOfBirth">Date of Birth :</label>
+                        <input
+                            value={user?.dateofbirth}
+                            type="date"
+                            id="dateofbirth"
+                            name="dateofbirth"
+                            onChange={(e) => setDateOfBirth(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="gender">Gender :</label>
+                        <input
+                            value={user?.gender}
+                            type="text"
+                            id="gender"
+                            name="gender"
+                            onChange={(e) => setGender(e.target.value)}
+                        />
+                        {/* <select
+                            value={gender}
+                            id="gender"
+                            name="gender"
+                            onChange={(e) => setGender(e.target.value)}
+                        >
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select> */}
+                    </div>
+                    <div>
+                        <label htmlFor="isCompleted">Is Completed :</label>
+                        <input
+                            type="checkbox"
+                            checked={user?.iscompleted}
+                            id="iscompleted"
+                            name="iscompleted"
+                            onChange={(e) => setIsCompleted(e.target.checked)}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="address">Address :</label>
+                        <input
+                            value={user?.address}
+                            type="text"
+                            id="address"
+                            name="address"
+                            onChange={(e) => setAddress(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="phonenumber">Phone Number :</label>
+                        <input
+                            value={user?.phonenumber}
+                            type="text"
+                            id="phonenumber"
+                            name="phonenumber"
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                        />
+                    </div>
+                    {/* <div>
+                        <label htmlFor="role">Role :</label>
+                        <input
+                            value={role.role_id}
+                            type="text"
+                            id="role"
+                            name="role"
+                            onChange={(e) => setRoleID(e.target.value)}
+                        />
+                    </div> */}
+                    <div>
+                    <select
+                            value={role.role_id}
+                            id="role_id"
+                            name="role_id"
+                            onChange={(e) => setRoleID(e.target.value)}
+                        >
+                            {role.map(x => (
+                                <option key={x.role_id} value={x.role_id}>{x.name}</option>
+                            ))}
+                            
+                            
+                        </select>
+                        </div>
+                        <div>
+                        <select
+                            value={user?.test?.test_id}
+                            id="test_id"
+                            name="test_id"
+                            onChange={(e) => setTestID(e.target.value)}
+                        >
+                            {test.map(x => (
+                                <option key={x.test_id} value={x.test_id}>{x.name}</option>
+                            ))}
+                            
+                            
+                        </select>
+                        </div>
+                        
+                        
+
+
+                        
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={onSubmit}>
+                        Save Changes
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+        </div>
+        </>
+    );
+};
 
 export default User;
