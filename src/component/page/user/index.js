@@ -8,6 +8,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import { Route, NavLink, HashRouter } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const User = () => {
     const [data, setData] = useState([]);
@@ -22,6 +24,7 @@ const User = () => {
     const [phonenumber, setPhoneNumber] = useState("");
     const [password, setPassword] = useState("");
     const [account, setAccount] = useState("");
+    const [ account_id, setAccountID ] = useState(0);
     const [role, setRole] = useState([]);
     const [role_id, setRoleID] = useState(0)
     const [ status, setStatus ] = useState(false);
@@ -73,7 +76,6 @@ const User = () => {
             url: "http://localhost:8089/api/user/"
         }).then((response) => {
             setUser(response.data.data);
-            console.log(response.data.data[0].test.name)
         }).catch((error) => {
             console.log(error);
         });
@@ -83,7 +85,7 @@ const User = () => {
         handleClose();
 
         let requestData = {
-            "account_id": id,
+            "id": id,
             "email": email,
             "fullname": fullname,
             "dateofbirth": dateofbirth,
@@ -107,7 +109,7 @@ const User = () => {
         
 
         axios({
-            method: "POST", 
+            method: editData ? "POST" : "POST",
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -161,19 +163,35 @@ const User = () => {
       const handleEdit = (rowData) => {
         setEditData(rowData);
         console.log(rowData);
+        console.log(rowData.account_id);
+        console.log(rowData.email);
+        console.log(rowData.password);
+        console.log(rowData.user.fullname);
+        console.log(rowData.user.dateofbirth);
+        console.log(rowData.user.gender);
+        console.log(rowData.user.iscompleted);
+        console.log(rowData.user.address);
+        console.log(rowData.user.phonenumber);
+        console.log(rowData.role.role_id);
+        // console.log(rowData.user_id);
+        console.log(rowData.user.test.test_id);
         if (rowData) {
-            setId(rowData.id);
-            setFullname(rowData.fullname);
+            setId(rowData.account_id);
             setEmail(rowData.email);
-            setDateOfBirth(rowData.dateofbirth);
-            setGender(rowData.gender);
-            setIsCompleted(rowData.iscompleted);
-            setAddress(rowData.address);
-            setPhoneNumber(rowData.phonenumber);
-            setPassword(rowData.setPassword);
-            setRoleID(rowData.role_id);
-            setUserID(rowData.user_id);
-            setTestID(rowData.test_id);
+            setPassword(rowData.password);
+            setFullname(rowData.user.fullname);
+            const selectedDate = new Date(rowData.user.dateofbirth);
+            const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1)
+                .toString()
+                .padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}`;
+            setDateOfBirth(formattedDate);
+            setGender(rowData.user.gender);
+            setIsCompleted(rowData.user.iscompleted);
+            setAddress(rowData.user.address);
+            setPhoneNumber(rowData.user.phonenumber);
+            setRoleID(rowData.role.role_id);
+            // setUserID(rowData.user_id);
+            setTestID(rowData.user.test.test_id);
         }
         handleShow();
     };
@@ -268,15 +286,15 @@ const User = () => {
                 <tbody>
                     {data.map(account => (
                         <tr key={account.id}>
-                            <td>{account.id}</td>
+                            <td>{account.account_id}</td>
                             <td>{account.email}</td>
                             <td>{account.password}</td>
-                            <td>{account.fullname}</td>
-                            <td>{account.dateofbirth}</td>
-                            <td>{account.gender}</td>
-                            <td>{account.iscompleted}</td>
-                            <td>{account.address}</td>
-                            <td>{account.phonenumber}</td>
+                            <td>{account.user.fullname}</td>
+                            <td>{account.user.dateofbirth}</td>
+                            <td>{account.user.gender}</td>
+                            <td>{account.user.iscompleted}</td>
+                            <td>{account.user.address}</td>
+                            <td>{account.user.phonenumber}</td>
                             <td>{account.role.name}</td>
                             <td>{account.user?.test?.name}</td>
                             
@@ -287,6 +305,25 @@ const User = () => {
                         </tr>
                     ))}
                 </tbody>
+                {/* <tbody>
+                    {user.map(user => (
+                        <tr key={user.id}>
+                            <td>{user.fullname}</td>
+                            <td>{user.dateofbirth}</td>
+                            <td>{user.gender}</td>
+                            <td>{user.iscompleted}</td>
+                            <td>{user.address}</td>
+                            <td>{user.phonenumber}</td>
+                            <td>{account?.role?.name}</td>
+                            <td>{user.test.name}</td>
+                            
+                            <td>
+                                <button onClick={() => handleEdit(user)}>Edit</button> | 
+                                <button onClick={() => handleDelete(user.id)}>Delete</button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody> */}
             </table>
 
             <Modal show={show} onHide={handleClose}>
@@ -296,6 +333,16 @@ const User = () => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                <div hidden>
+                        <label htmlFor="email">ID :</label>
+                        <input
+                            value={id}
+                            type="id"
+                            id="id"
+                            name="id"
+                            onChange={(e) => setId(e.target.value)}
+                        />
+                    </div>
                     <div>
                         <label htmlFor="email">Email :</label>
                         <input
@@ -329,17 +376,32 @@ const User = () => {
                     <div>
                         <label htmlFor="dateOfBirth">Date of Birth :</label>
                         <input
-                            value={user?.dateofbirth}
+                            value={dateofbirth}
                             type="date"
                             id="dateofbirth"
                             name="dateofbirth"
-                            onChange={(e) => setDateOfBirth(e.target.value)}
+                            onChange={(e) => {
+                                const selectedDate = new Date(e.target.value);
+                                const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1)
+                                    .toString()
+                                    .padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}`;
+                                setDateOfBirth(formattedDate);
+                            }}
                         />
                     </div>
+                    {/* <div>
+                    <label htmlFor="dateOfBirth">Date of Birth :</label>
+                    <DatePicker
+                        type="date"
+                        value={dateofbirth}
+                        dateFormat="yyyy-MM-dd"
+                        onChange={(e) => setDateOfBirth(e.target.value)}
+                        />
+                        </div> */}
                     <div>
                         <label htmlFor="gender">Gender :</label>
                         <input
-                            value={user?.gender}
+                            value={gender}
                             type="text"
                             id="gender"
                             name="gender"
@@ -359,7 +421,7 @@ const User = () => {
                         <label htmlFor="isCompleted">Is Completed :</label>
                         <input
                             type="checkbox"
-                            checked={user?.iscompleted}
+                            checked={iscompleted}
                             id="iscompleted"
                             name="iscompleted"
                             onChange={(e) => setIsCompleted(e.target.checked)}
@@ -368,7 +430,7 @@ const User = () => {
                     <div>
                         <label htmlFor="address">Address :</label>
                         <input
-                            value={user?.address}
+                            value={address}
                             type="text"
                             id="address"
                             name="address"
@@ -378,7 +440,7 @@ const User = () => {
                     <div>
                         <label htmlFor="phonenumber">Phone Number :</label>
                         <input
-                            value={user?.phonenumber}
+                            value={phonenumber}
                             type="text"
                             id="phonenumber"
                             name="phonenumber"
@@ -397,7 +459,7 @@ const User = () => {
                     </div> */}
                     <div>
                     <select
-                            value={role.role_id}
+                            value={role_id}
                             id="role_id"
                             name="role_id"
                             onChange={(e) => setRoleID(e.target.value)}
@@ -411,7 +473,7 @@ const User = () => {
                         </div>
                         <div>
                         <select
-                            value={user?.test?.test_id}
+                            value={test_id}
                             id="test_id"
                             name="test_id"
                             onChange={(e) => setTestID(e.target.value)}
