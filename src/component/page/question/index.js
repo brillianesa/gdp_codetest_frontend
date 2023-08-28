@@ -145,7 +145,7 @@ let Question = () => {
       const handleEdit = (rowData) => {
         setEditData(rowData);
         setQuestion_id(rowData.question_id);
-        setTestId(rowData.test_id);
+        setTestId(rowData.test.test_id);
         setQuestionDetail(rowData.questiondetail);
         setCorrectAnswer(rowData.correctanswer);
         setImage(rowData.image);
