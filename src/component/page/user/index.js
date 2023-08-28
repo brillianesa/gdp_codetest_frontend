@@ -22,9 +22,14 @@ const User = () => {
     const [phonenumber, setPhoneNumber] = useState("");
     const [password, setPassword] = useState("");
     const [account, setAccount] = useState("");
-    const [role, setRole] = useState("");
+    const [role, setRole] = useState([]);
+    const [role_id, setRoleID] = useState(0)
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
+    const [test, setTest] = useState([]);
+    const [ test_id, setTestID ] = useState(0);
+    const [ user, setUser ] = useState([]);
+    const [ user_id, setUserID ]= useState(0);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -35,7 +40,40 @@ const User = () => {
             url: "http://localhost:8089/api/account/"
         }).then((response) => {
             setData(response.data.data);
-            console.log(response.data.data[0].role);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
+    useEffect(() => {
+        axios({
+            method: "GET",
+            url: "http://localhost:8089/api/role/"
+        }).then((response) => {
+            setRole(response.data.data);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
+    useEffect(() => {
+        axios({
+            method: "GET",
+            url: "http://localhost:8089/api/test/"
+        }).then((response) => {
+            setTest(response.data.data);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
+    useEffect(() => {
+        axios({
+            method: "GET",
+            url: "http://localhost:8089/api/user/"
+        }).then((response) => {
+            setUser(response.data.data);
+            console.log(response.data.data[0].test.name)
         }).catch((error) => {
             console.log(error);
         });
@@ -45,7 +83,7 @@ const User = () => {
         handleClose();
 
         let requestData = {
-            "id": id,
+            "account_id": id,
             "email": email,
             "fullname": fullname,
             "dateofbirth": dateofbirth,
@@ -54,7 +92,17 @@ const User = () => {
             "address": address,
             "phonenumber": phonenumber,
             "password": password,
-            "role": role
+            "role": {
+                "role_id": role_id
+            },
+            "user": {
+                "user_id": user_id
+            },
+            "test": {
+                "test_id": test_id
+            }
+                
+
         };
         
 
@@ -112,10 +160,41 @@ const User = () => {
 
       const handleEdit = (rowData) => {
         setEditData(rowData);
-        setId(rowData.id);
-        setFullname(rowData.fullname);
+        console.log(rowData);
+        if (rowData) {
+            setId(rowData.id);
+            setFullname(rowData.fullname);
+            setEmail(rowData.email);
+            setDateOfBirth(rowData.dateofbirth);
+            setGender(rowData.gender);
+            setIsCompleted(rowData.iscompleted);
+            setAddress(rowData.address);
+            setPhoneNumber(rowData.phonenumber);
+            setPassword(rowData.setPassword);
+            setRoleID(rowData.role_id);
+            setUserID(rowData.user_id);
+            setTestID(rowData.test_id);
+        }
         handleShow();
-      }
+    };
+    
+    //   let requestData = {
+    //     "id": id,
+    //     "email": email,
+    //     "fullname": fullname,
+    //     "dateofbirth": dateofbirth,
+    //     "gender": gender,
+    //     "iscompleted": iscompleted,
+    //     "address": address,
+    //     "phonenumber": phonenumber,
+    //     "password": password,
+    //     "role": {
+    //         "role_id": role_id
+    //     }
+            
+
+    // };
+    
 
     return (
         <>
@@ -183,25 +262,27 @@ const User = () => {
                     <th>Address</th>
                     <th>Phone Number</th>
                     <th>Role</th>
+                    <th>Test Package</th>
                     <th>ACTION</th>
                 </thead>
                 <tbody>
-                    {data.map(user => (
-                        <tr key={user.id}>
-                            <td>{user.id}</td>
-                            <td>{user.email}</td>
-                            <td>{user.password}</td>
-                            <td>{user.fullname}</td>
-                            <td>{user.dateofbirth}</td>
-                            <td>{user.gender}</td>
-                            <td>{user.iscompleted}</td>
-                            <td>{user.address}</td>
-                            <td>{user.phonenumber}</td>
-                            <td>{user.role.name}</td>
+                    {data.map(account => (
+                        <tr key={account.id}>
+                            <td>{account.id}</td>
+                            <td>{account.email}</td>
+                            <td>{account.password}</td>
+                            <td>{account.fullname}</td>
+                            <td>{account.dateofbirth}</td>
+                            <td>{account.gender}</td>
+                            <td>{account.iscompleted}</td>
+                            <td>{account.address}</td>
+                            <td>{account.phonenumber}</td>
+                            <td>{account.role.name}</td>
+                            <td>{account.user?.test?.name}</td>
                             
                             <td>
-                                <button onClick={() => handleEdit(user)}>Edit</button> | 
-                                <button onClick={() => handleDelete(user.id)}>Delete</button>
+                                <button onClick={() => handleEdit(account)}>Edit</button> | 
+                                <button onClick={() => handleDelete(account.id)}>Delete</button>
                             </td>
                         </tr>
                     ))}
@@ -248,7 +329,7 @@ const User = () => {
                     <div>
                         <label htmlFor="dateOfBirth">Date of Birth :</label>
                         <input
-                            value={dateofbirth}
+                            value={user?.dateofbirth}
                             type="date"
                             id="dateofbirth"
                             name="dateofbirth"
@@ -258,7 +339,7 @@ const User = () => {
                     <div>
                         <label htmlFor="gender">Gender :</label>
                         <input
-                            value={gender}
+                            value={user?.gender}
                             type="text"
                             id="gender"
                             name="gender"
@@ -278,7 +359,7 @@ const User = () => {
                         <label htmlFor="isCompleted">Is Completed :</label>
                         <input
                             type="checkbox"
-                            checked={iscompleted}
+                            checked={user?.iscompleted}
                             id="iscompleted"
                             name="iscompleted"
                             onChange={(e) => setIsCompleted(e.target.checked)}
@@ -287,7 +368,7 @@ const User = () => {
                     <div>
                         <label htmlFor="address">Address :</label>
                         <input
-                            value={address}
+                            value={user?.address}
                             type="text"
                             id="address"
                             name="address"
@@ -297,23 +378,56 @@ const User = () => {
                     <div>
                         <label htmlFor="phonenumber">Phone Number :</label>
                         <input
-                            value={phonenumber}
+                            value={user?.phonenumber}
                             type="text"
                             id="phonenumber"
                             name="phonenumber"
                             onChange={(e) => setPhoneNumber(e.target.value)}
                         />
                     </div>
-                    <div>
+                    {/* <div>
                         <label htmlFor="role">Role :</label>
                         <input
-                            value={role.name}
+                            value={role.role_id}
                             type="text"
                             id="role"
                             name="role"
-                            onChange={(e) => setRole(e.target.value)}
+                            onChange={(e) => setRoleID(e.target.value)}
                         />
-                    </div>
+                    </div> */}
+                    <div>
+                    <select
+                            value={role.role_id}
+                            id="role_id"
+                            name="role_id"
+                            onChange={(e) => setRoleID(e.target.value)}
+                        >
+                            {role.map(x => (
+                                <option key={x.role_id} value={x.role_id}>{x.name}</option>
+                            ))}
+                            
+                            
+                        </select>
+                        </div>
+                        <div>
+                        <select
+                            value={user?.test?.test_id}
+                            id="test_id"
+                            name="test_id"
+                            onChange={(e) => setTestID(e.target.value)}
+                        >
+                            {test.map(x => (
+                                <option key={x.test_id} value={x.test_id}>{x.name}</option>
+                            ))}
+                            
+                            
+                        </select>
+                        </div>
+                        
+                        
+
+
+                        
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
