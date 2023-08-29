@@ -120,7 +120,11 @@ let Test = () => {
         setEditData(rowData);
         setTest_id(rowData.test_id);
         setName(rowData.name);
-        setDate(rowData.date);
+        const selectedDate = new Date(rowData.date);
+            const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1)
+                .toString()
+                .padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}`;
+        setDate(formattedDate);
         handleShow();
       }
 
@@ -163,6 +167,11 @@ let Test = () => {
             Manage User
           </button>
         </NavLink><br /><br />
+        <NavLink to="/admin/role">
+          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Role
+          </button>
+        </NavLink><br /><br />
         <NavLink to="/admin/question">
           <button  type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
             Manage Question
@@ -189,10 +198,9 @@ let Test = () => {
         <table className="table">
             <thead>
                 <th>Test ID</th>
-                <th>Test ID</th>
-                <th>Test Detail</th>
-                <th>Answer</th>
-                <th>PhoneNumber</th>
+                <th>Test Name</th>
+                <th>Test Date</th>
+                <th>Action</th>
                 <th><button onClick={handleShow}>Create</button></th>
             </thead>
             <tbody>
@@ -223,7 +231,19 @@ let Test = () => {
                 <input placeholder="Detail" value = {name} type="text" id="name" name="name" onChange={e => setName(e.target.value)}/>
                 </div><br />
                 <div>
-                <input placeholder="Answer" value = {date} type="text" id="date" name="date" onChange={e => setDate(e.target.value)}/>
+                <input
+                            value={date}
+                            type="date"
+                            id="dateofbirth"
+                            name="dateofbirth"
+                            onChange={(e) => {
+                                const selectedDate = new Date(e.target.value);
+                                const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1)
+                                    .toString()
+                                    .padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}`;
+                                setDate(formattedDate);
+                            }}
+                        />
                 </div><br />
             </Modal.Body>
             <Modal.Footer>
