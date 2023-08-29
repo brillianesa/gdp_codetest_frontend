@@ -41,7 +41,7 @@ let Admin = (props) => {
     };
     
     useEffect((id) => {
-      id = "1001"
+      id = "1"
       axios({
         method: "GET",
         url: 'http://localhost:8089/api/user/' + id
