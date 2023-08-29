@@ -298,7 +298,7 @@ const User = () => {
                             <td>{account.user.address}</td>
                             <td>{account.user.phonenumber}</td>
                             <td>{account.role.name}</td>
-                            <td>{account.user?.test?.name}</td>
+                            <td>{account.user.test.name}</td>
                             
                             <td>
                                 <button onClick={() => handleEdit(account)}>Edit</button> | 

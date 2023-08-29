@@ -236,7 +236,7 @@ let Question = () => {
                     return (
                         <tr key={x.question_id}>
                           <td>{x.question_id}</td>
-                          <td>{x?.test?.test_id}</td>
+                          <td>{x.test?.test_id}</td>
                             <td>{x.questiondetail}</td>
                             <td>{x.correctanswer}</td>
                             <td>{x.image}</td>
