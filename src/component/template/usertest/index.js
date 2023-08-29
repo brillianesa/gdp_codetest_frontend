@@ -29,30 +29,44 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'mdbreact/dist/css/mdb.css';
 
-let User = (props) => {
+let UserTest = (props) => {
     const [ data, setData ] = useState([{}])
-    const [ adminData, setAdminData ] = useState([{}])
+    const [ userData, setUserData ] = useState([{}])
     const [ show, setShow ] = useState(false)
-    const [ question_id, setQuestion_id ] = useState(0)
-    const [ test_id, setTest_id ] = useState(0)
-    const [ questionDetail, setQuestionDetail ] = useState("")
+    
     const [ correctAnswer, setCorrectAnswer ] = useState("")
     const [ image, setImage ] = useState("")
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
-    const adminInfo = axios.get("http://localhost:8089/api/user/1001");
 
-    adminInfo.then((response) => {
-          setAdminData(response.data.data)
-          console.log()
+    const [ datascore, setScoreData ] = useState([{}])
+    const[score, setScore] = useState([{}]);
+    const[score_id, setScoreID] = useState(0);
+    const[account_id, setAccountID] = useState(0);
+    const [useranswer, setUserAnswer] = useState("");
+    const [ question, setQuestion ] = useState([{}]);
+    const [ question_id, setQuestionID ] = useState(0)
+    const [ questionDetail, setQuestionDetail ] = useState("");
+    const [ account, setAccount ] = useState([{}]);
+    const [ test, setTest ] = useState([{}]);
+
+
+    const userInfo = axios.get("http://localhost:8089/api/user/35");
+    
+
+    userInfo.then((response) => {
+          setUserData(response.data.data)
+          // console.log(userData?.test?.test_id);
       })
+
+      
 
     useEffect(() => {
         axios({
             method: "GET",
-            url: "http://localhost:8089/api/question/"
+            url: "http://localhost:8089/api/score/account/35"
         }).then((response) => {
             setData(response.data.data)
             console.log()
@@ -61,27 +75,42 @@ let User = (props) => {
         })
     }, [])
 
+    useEffect(() => {
+      axios({
+          method: "GET",
+          url: "http://localhost:8089/api/score/"
+      }).then((response) => {
+          setScoreData(response.data.data)
+          console.log()
+      }).catch((error)=> {
+          console.log(error)
+      })
+  }, [])
+
     const onSubmit = () => {
         handleClose();
 
         let requestData = {
-            "question_id" : question_id,
-            "test" : {
-              "test_id":  test_id
+          "score_id": score_id,
+          "account": {
+            "account_id" : account_id
+          },
+            "question": {
+              "question_id" : question_id,
             },
             "questiondetail": questionDetail,
-            "correctanswer": correctAnswer,
-            "image": image
+            "useranswer": useranswer
         }
         axios({
             method: editData ? "POST" : "POST",
             headers: {
               'Content-Type': 'application/json',
             },
-            url: "http://localhost:8089/api/question/",
+            url: "http://localhost:8089/api/score/",
             data: JSON.stringify(requestData)
           }).then((response) => {
             if (response.data.status === 200) {
+              console.log(requestData);
               setStatus(true);
             }
           }).catch((error) => {
@@ -94,13 +123,14 @@ let User = (props) => {
 
       const handleEdit = (rowData) => {
         setEditData(rowData);
-        setQuestion_id(rowData.question_id);
-        setTest_id(rowData.test_id);
-        setQuestionDetail(rowData.questiondetail);
-        setCorrectAnswer(rowData.correctanswer);
-        setImage(rowData.image);
+        setImage(rowData.question.image);
+        setScoreID(rowData.score_id);
+        setAccountID(rowData.account.account_id);
+        setQuestionID(rowData.question.question_id);
+        setUserAnswer(rowData.useranswer);
         handleShow();
-      }
+      
+    }
     
     return (
         <>
@@ -136,7 +166,7 @@ let User = (props) => {
             <img src='https://p7.hiclipart.com/preview/355/848/997/computer-icons-user-profile-google-account-photos-icon-account.jpg' class="rounded-circle center" width="100" height="100"/>
         </div> 
         <div style={{width: "60%", height: "100%", color: "white", paddingTop: "9.4%", paddingBottom: "1%"}}>
-        <h2 style={{textShadow: "0px 0px 20px white"}}><b>Welcome back, {adminData.fullname}!</b></h2>
+        <h2 style={{textShadow: "0px 0px 20px white"}}><b>Welcome back, {userData.fullname}!</b></h2>
         <p style={{textShadow: "0px 0px 20px white"}}>In this exam you are given a set of 5 questions to test your knowledge in database and programming language skills. You can view your score after submission. <b>Good luck!</b></p>
         <p></p>
         </div>      
@@ -145,19 +175,21 @@ let User = (props) => {
     <div style={{width: "80%", display: "flex",  position: "absolute", paddingLeft: "20%"}}>
         <br />
         <br />
+        
         <table className="table">
             <thead style={{textAlign: "left"}}>
                 <th>Question</th>
+                
                 <th style={{textAlign: "center"}}>Image</th>
             </thead>
             <tbody style={{textAlign: "left"}}>
                 {data.map(x => {
                     return (
                       <>
-                        <tr key={x.question_id}>
-                            <td>{x.questiondetail}</td>
+                        <tr key={x?.question?.question_id}>
+                            <td>{x?.question?.questiondetail}</td>
                             
-                            <td style={{textAlign: "center", top: "1000"}}><img src={x.image} width="300"></img></td>
+                            <td style={{textAlign: "center", top: "1000"}}><img src={x?.question?.image} width="300"></img></td>
                         </tr>
                         <tr>
                             <td>
@@ -192,13 +224,18 @@ let User = (props) => {
                 <img src={image} width="300"></img>
                 <br />
                 <b>{questionDetail}</b>
-                <input hidden placeholder="Question ID" value = {question_id} type="text" id="question_id" name="question_id" onChange={e => setQuestion_id(e.target.value)}/>
+                <div>
+                <input  placeholder="Score ID" value = {score_id} type="text" id="score_id" name="score_id" onChange={e => setScoreID(e.target.value)}/>
+                </div>
+                <div>
+                <input  placeholder="Account ID" value = {account_id} type="text" id="account_id" name="account_id" onChange={e => setAccountID(e.target.value)}/>
+                </div>
+                <input  placeholder="Question ID" value = {question_id} type="text" id="question_id" name="question_id" onChange={e => setQuestionID(e.target.value)}/>
                 </div><br />
                 <div>
-                <textarea placeholder="Answer" rows="8" style={{width: "100%", height: "100%"}} value = {correctAnswer} type="text" id="correctAnswer" name="correctAnswer" onChange={e => setCorrectAnswer(e.target.value)}/>
+                <textarea placeholder="Answer" rows="8" style={{width: "100%", height: "100%"}} value = {useranswer} type="text" id="correctAnswer" name="useranswer" onChange={e => setUserAnswer(e.target.value)}/>
                 </div><br />
                 <div>
-                <input hidden placeholder="Test ID" value = {test_id} type="text" id="test_id" name="test_id" onChange={e => setTest_id(e.target.value)}/>
                 </div>
             </Modal.Body>
             <Modal.Footer>
@@ -216,4 +253,4 @@ let User = (props) => {
     )
 }
 
-export default User;
+export default UserTest;
