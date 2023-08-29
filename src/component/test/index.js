@@ -199,7 +199,7 @@ let Test = () => {
             <thead>
                 <th>Test ID</th>
                 <th>Test Name</th>
-                <th>Test Date</th>
+                <th>Date Created</th>
                 <th>Action</th>
                 <th><button onClick={handleShow}>Create</button></th>
             </thead>
