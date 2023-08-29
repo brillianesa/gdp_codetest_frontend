@@ -65,9 +65,17 @@ let Question = () => {
 
         let requestData = {
             "question_id" : question_id,
+<<<<<<< Updated upstream
             "test_id" : test_id,
             "questionDetail": questionDetail,
             "correctAnswer": correctAnswer,
+=======
+            "test" : {
+              "test_id":  test_id
+            },
+            "questiondetail": questionDetail,
+            "correctanswer": correctAnswer,
+>>>>>>> Stashed changes
             "image": image
         }
         axios({
@@ -205,9 +213,16 @@ let Question = () => {
                 {data.map(x => {
                     return (
                         <tr key={x.question_id}>
+<<<<<<< Updated upstream
                             <td>{x.test_id}</td>
                             <td>{x.questionDetail}</td>
                             <td>{x.correctAnswer}</td>
+=======
+                            <td>{x.question_id}</td>
+                            <td>{x.test_id}</td>
+                            <td>{x.questiondetail}</td>
+                            <td>{x.correctanswer}</td>
+>>>>>>> Stashed changes
                             <td>{x.image}</td>
                             <td><button onClick={() => handleEdit(x)}>Edit</button> <button onClick={() => handleDelete(x.question_id)}>Delete</button></td>
                         </tr>

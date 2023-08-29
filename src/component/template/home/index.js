@@ -1,4 +1,3 @@
-
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -71,7 +70,7 @@ let Home = (props) => {
         <div style={{paddingTop: "7%"}}>
         <h1 style={{textShadow: "0px 0px 20px white"}}>AMARTEK CODE TEST</h1>
         <p>A preliminary test for IT Graduate Development Program</p>
-        <Button href="/test" variant="primary" className="mr-3 btn-sm" style={{marginRight: "0.25%"}}><b>Take an exam</b></Button>
+        <Button href="/user" variant="primary" className="mr-3 btn-sm" style={{marginRight: "0.25%"}}><b>Take an exam</b></Button>
         <Button onClick={handleClick} variant="secondary" className='btn-sm' style={{marginLeft: "0.25%"}}><b>Learn More</b></Button>
         </div>
         <div ref={ref} style={{paddingTop: "5.8%"}}>
@@ -188,7 +187,7 @@ let Home = (props) => {
                 <Button variant="primary" href="/admin" className='btn-sm'>
                 <b>Admin</b>
                 </Button>
-                <Button variant="secondary" className='btn-sm'>
+                <Button variant="secondary" href="/user" className='btn-sm'>
                 <b>Test Taker</b>
                 </Button>
                 </div>

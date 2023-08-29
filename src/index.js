@@ -9,6 +9,11 @@ import NotFound from './component/page/error/404';
 import Home from './component/page/home';
 import Admin from './component/page/admin';
 import Question from './component/page/question';
+<<<<<<< Updated upstream
+=======
+import User from './component/page/user';
+import Test from './component/page/test';
+>>>>>>> Stashed changes
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -20,6 +25,11 @@ root.render(
         <Route path="/home" element={<Home/>}/>
         <Route path="/admin" element={<Admin/>}/>
         <Route path="/admin/question" element={<Question/>}/>
+<<<<<<< Updated upstream
+=======
+        <Route path="/admin/user" element={<User/>}/>
+        <Route path="/user" element={<Test/>}/>
+>>>>>>> Stashed changes
         <Route index element={<Home/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
