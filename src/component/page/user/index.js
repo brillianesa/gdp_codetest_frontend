@@ -75,7 +75,7 @@ const User = () => {
             method: "GET",
             url: "http://localhost:8089/api/user/"
         }).then((response) => {
-            setUser(response.data.data);
+            setUser(response.data.data); 
         }).catch((error) => {
             console.log(error);
         });
@@ -267,7 +267,8 @@ const User = () => {
           </button>
         </NavLink>
     </div>
-            <button onClick={handleShow}>CREATE</button>
+    <div style={{marginTop: '4%', marginLeft: '10px'}}>
+
             <table className="table">
                 <thead>
                     <th>ID</th>
@@ -283,6 +284,7 @@ const User = () => {
                     <th>Test Package</th>
                     <th>ACTION</th>
                 </thead>
+                <button onClick={handleShow}>CREATE</button>
                 <tbody>
                     {data.map(account => (
                         <tr key={account.id}>
@@ -325,6 +327,7 @@ const User = () => {
                     ))}
                 </tbody> */}
             </table>
+            </div>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
