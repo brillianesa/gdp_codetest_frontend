@@ -93,6 +93,11 @@ let Admin = (props) => {
               Manage User
             </button>
           </NavLink><br /><br />
+        <NavLink to="/admin/role">
+          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Role
+          </button>
+        </NavLink><br /><br />
           <NavLink to="/admin/question">
             <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
               Manage Question

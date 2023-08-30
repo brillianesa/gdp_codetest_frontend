@@ -3,11 +3,14 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import React from "react";
 import logo from '../../../logo.svg';
 import Swal from "sweetalert2";
@@ -29,25 +32,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'mdbreact/dist/css/mdb.css';
 
-let Question = () => {
+let Role = () => {
     const [ data, setData ] = useState([{}])
     const [ adminData, setAdminData ] = useState([{}])
     const [ show, setShow ] = useState(false)
-    const [ question_id, setQuestion_id ] = useState(0)
-    const [ test_id, setTest_id ] = useState(0)
-    const [ questionDetail, setQuestionDetail ] = useState("")
-    const [ correctAnswer, setCorrectAnswer ] = useState("")
-    const [ image, setImage ] = useState("")
+    const [role_id, setRoleID] = useState(0)
+    const [ name, setName ] = useState("")
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
     const adminInfo = axios.get("http://localhost:8089/api/user/1001");
-<<<<<<< Updated upstream
-=======
 
-    const onChangeTest = e => setTest(e.target.value);
->>>>>>> Stashed changes
 
     adminInfo.then((response) => {
           setAdminData(response.data.data)
@@ -56,7 +52,7 @@ let Question = () => {
     useEffect(() => {
         axios({
             method: "GET",
-            url: "http://localhost:8089/api/question/"
+            url: "http://localhost:8089/api/role/"
         }).then((response) => {
             setData(response.data.data)
             console.log()
@@ -65,30 +61,20 @@ let Question = () => {
         })
     }, [])
 
+
     const onSubmit = () => {
         handleClose();
 
         let requestData = {
-            "question_id" : question_id,
-<<<<<<< Updated upstream
-            "test_id" : test_id,
-            "questionDetail": questionDetail,
-            "correctAnswer": correctAnswer,
-=======
-            "test" : {
-              "test_id":  test_id
-            },
-            "questiondetail": questionDetail,
-            "correctanswer": correctAnswer,
->>>>>>> Stashed changes
-            "image": image
+            "role_id" : role_id,
+            "name" : name
         }
         axios({
             method: editData ? "POST" : "POST",
             headers: {
               'Content-Type': 'application/json',
             },
-            url: "http://localhost:8089/api/question/",
+            url: "http://localhost:8089/api/role/",
             data: JSON.stringify(requestData)
           }).then((response) => {
             if (response.data.status === 200) {
@@ -117,7 +103,7 @@ let Question = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                url: "http://localhost:8089/api/question/" + id,
+                url: "http://localhost:8089/api/role/" + id,
             }).then((response) => {
                 if(response.data.status === 200){
                     setStatus(true)
@@ -135,11 +121,8 @@ let Question = () => {
 
       const handleEdit = (rowData) => {
         setEditData(rowData);
-        setQuestion_id(rowData.question_id);
-        setTest_id(rowData.test_id);
-        setQuestionDetail(rowData.questionDetail);
-        setCorrectAnswer(rowData.correctAnswer);
-        setImage(rowData.image);
+        setRoleID(rowData.role_id);
+        setName(rowData.name);
         handleShow();
       }
 
@@ -182,8 +165,13 @@ let Question = () => {
             Manage User
           </button>
         </NavLink><br /><br />
-        <NavLink to="/admin/question">
+        <NavLink to="/admin/role">
           <button disabled type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Role
+          </button>
+        </NavLink><br /><br />
+        <NavLink to="/admin/question">
+          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
             Manage Question
           </button>
         </NavLink><br /><br />
@@ -202,38 +190,23 @@ let Question = () => {
     <div style={{width: "100%", paddingTop: "9%", paddingLeft: "5%"}}>
     <h2><b>Welcome back, {adminData.fullname}!</b></h2>
     
-    <div style={{width: "100%", display: "flex",  position: "absolute"}}>
+    <div style={{width: "50%", display: "flex",  position: "absolute"}}>
         <br />
         <br />
+        
         <table className="table">
             <thead>
-                <th>ID</th>
-                <th>Test</th>
-                <th>Question Detail</th>
-                <th>Answer</th>
-                <th>Image</th>
-<<<<<<< Updated upstream
-                <th><button onClick={handleShow}>Create</button></th>
-=======
-                <th style={{width: "20%"}}>Action</th>
->>>>>>> Stashed changes
+                <th>Role ID</th>
+                <th>Name</th>
+                <th>Action</th>
             </thead>
             <tbody>
                 {data.map(x => {
                     return (
-                        <tr key={x.question_id}>
-<<<<<<< Updated upstream
-                            <td>{x.test_id}</td>
-                            <td>{x.questionDetail}</td>
-                            <td>{x.correctAnswer}</td>
-=======
-                            <td>{x.question_id}</td>
-                            <td>{x.test_id}</td>
-                            <td>{x.questiondetail}</td>
-                            <td>{x.correctanswer}</td>
->>>>>>> Stashed changes
-                            <td>{x.image}</td>
-                            <td><button style={{height: "30px", width: "100px"}} class="btn btn-outline-primary btn-sm" onClick={() => handleEdit(x)}>Edit</button><button style={{height: "30px", width: "100px"}} class="btn btn-outline-danger btn-sm" onClick={() => handleDelete(x.question_id)}>Delete</button></td>
+                        <tr key={x.role_id}>
+                          <td style={{paddingTop:"28px"}}>{x.role_id}</td>
+                            <td style={{paddingTop:"28px"}}>{x.name}</td>
+                            <td><button style={{height: "30px", width: "100px"}} class="btn btn-outline-primary btn-sm" onClick={() => handleEdit(x)}>Edit</button> <button style={{height: "30px", width: "100px"}} class="btn btn-outline-danger btn-sm" onClick={() => handleDelete(x.role_id)}>Delete</button></td>
                         </tr>
                     )
                 })}
@@ -244,25 +217,17 @@ let Question = () => {
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title><Modal.Title>
-                {editData ? "Edit Question" : "Create Question"}
+                {editData ? "Edit Role" : "Create Role"}
                 </Modal.Title></Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div>
-                <input placeholder="Question ID" value = {question_id} type="text" id="question_id" name="question_id" onChange={e => setQuestion_id(e.target.value)}/>
+                <input placeholder="Role ID" value = {role_id} type="text" id="role_id" name="role_id" onChange={e => setRoleID(e.target.value)}/>
                 </div><br />
+
                 <div>
-                <input placeholder="Test ID" value = {test_id} type="text" id="test_id" name="test_id" onChange={e => setTest_id(e.target.value)}/>
+                <input placeholder="Detail" value = {name} type="text" id="name" name="name" onChange={e => setName(e.target.value)}/>
                 </div><br />
-                <div>
-                <input placeholder="Detail" value = {questionDetail} type="text" id="questionDetail" name="questionDetail" onChange={e => setQuestionDetail(e.target.value)}/>
-                </div><br />
-                <div>
-                <input placeholder="Answer" value = {correctAnswer} type="text" id="correctAnswer" name="correctAnswer" onChange={e => setCorrectAnswer(e.target.value)}/>
-                </div><br />
-                <div>
-                <input placeholder="Image Link" value = {image} type="text" id="image" name="image" onChange={e => setImage(e.target.value)}/>
-                </div>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="primary" class="btn btn-primary btn-sm" onClick={onSubmit}>
@@ -280,4 +245,4 @@ let Question = () => {
     )
 }
 
-export default Question;
+export default Role;

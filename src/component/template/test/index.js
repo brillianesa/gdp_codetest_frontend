@@ -9,7 +9,7 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import CardGroup from 'react-bootstrap/CardGroup';
 import React from "react";
-import logo from '../../../logo.svg';
+// import logo from '../../../logo.svg';
 import Swal from "sweetalert2";
 import axios from 'axios'
 import { useRef, useState, useEffect } from 'react';
@@ -29,25 +29,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'mdbreact/dist/css/mdb.css';
 
-let Question = () => {
+let Test = () => {
     const [ data, setData ] = useState([{}])
     const [ adminData, setAdminData ] = useState([{}])
     const [ show, setShow ] = useState(false)
-    const [ question_id, setQuestion_id ] = useState(0)
     const [ test_id, setTest_id ] = useState(0)
-    const [ questionDetail, setQuestionDetail ] = useState("")
-    const [ correctAnswer, setCorrectAnswer ] = useState("")
-    const [ image, setImage ] = useState("")
+    const [ name, setName ] = useState("")
+    const [ date, setDate ] = useState("")
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
     const adminInfo = axios.get("http://localhost:8089/api/user/1001");
-<<<<<<< Updated upstream
-=======
-
-    const onChangeTest = e => setTest(e.target.value);
->>>>>>> Stashed changes
 
     adminInfo.then((response) => {
           setAdminData(response.data.data)
@@ -56,7 +49,7 @@ let Question = () => {
     useEffect(() => {
         axios({
             method: "GET",
-            url: "http://localhost:8089/api/question/"
+            url: "http://localhost:8089/api/test/"
         }).then((response) => {
             setData(response.data.data)
             console.log()
@@ -69,26 +62,16 @@ let Question = () => {
         handleClose();
 
         let requestData = {
-            "question_id" : question_id,
-<<<<<<< Updated upstream
             "test_id" : test_id,
-            "questionDetail": questionDetail,
-            "correctAnswer": correctAnswer,
-=======
-            "test" : {
-              "test_id":  test_id
-            },
-            "questiondetail": questionDetail,
-            "correctanswer": correctAnswer,
->>>>>>> Stashed changes
-            "image": image
+            "name": name,
+            "date": date
         }
         axios({
             method: editData ? "POST" : "POST",
             headers: {
               'Content-Type': 'application/json',
             },
-            url: "http://localhost:8089/api/question/",
+            url: "http://localhost:8089/api/test/",
             data: JSON.stringify(requestData)
           }).then((response) => {
             if (response.data.status === 200) {
@@ -117,7 +100,7 @@ let Question = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                url: "http://localhost:8089/api/question/" + id,
+                url: "http://localhost:8089/api/test/" + id,
             }).then((response) => {
                 if(response.data.status === 200){
                     setStatus(true)
@@ -135,11 +118,13 @@ let Question = () => {
 
       const handleEdit = (rowData) => {
         setEditData(rowData);
-        setQuestion_id(rowData.question_id);
         setTest_id(rowData.test_id);
-        setQuestionDetail(rowData.questionDetail);
-        setCorrectAnswer(rowData.correctAnswer);
-        setImage(rowData.image);
+        setName(rowData.name);
+        const selectedDate = new Date(rowData.date);
+            const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1)
+                .toString()
+                .padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}`;
+        setDate(formattedDate);
         handleShow();
       }
 
@@ -164,7 +149,7 @@ let Question = () => {
           <Nav.Link href="/">
               <button type="button" class="btn btn-outline-success btn-sm"><b>Logout</b></button>
           </Nav.Link>
-          <Nav.Link href="/home">
+          <Nav.Link href="home">
               <img src="https://cdn-icons-png.flaticon.com/512/74/74807.png" width="32" height="32" style={{marginTop: "12%", marginLeft: "30%"}} />
           </Nav.Link>
         </Nav>
@@ -173,7 +158,7 @@ let Question = () => {
   </Navbar>
   </div>
   <div style={{width: "100%", height: "100%", display: "flex",  position: "absolute"}}>
-    <div style={{width: "30%", height: "100%", paddingTop: "9%", paddingBottom: "1%", backgroundImage: "linear-gradient(grey 44.5%, white 40%, #bfbfbf 100%)", boxShadow: "0px 0px 10px black", textAlign: "center"}}>
+  <div style={{width: "30%", height: "100%", paddingTop: "9%", paddingBottom: "1%", backgroundImage: "linear-gradient(grey 44.5%, white 40%, #bfbfbf 100%)", boxShadow: "0px 0px 10px black", textAlign: "center"}}>
       <img src='https://p7.hiclipart.com/preview/355/848/997/computer-icons-user-profile-google-account-photos-icon-account.jpg' class="rounded-circle center" width="100" height="100"/>
       <h4 style={{color: "white", paddingTop: "2%", paddingBottom: "6%"}}><b>{adminData.fullname}</b></h4>
       <br />
@@ -182,13 +167,18 @@ let Question = () => {
             Manage User
           </button>
         </NavLink><br /><br />
+        <NavLink to="/admin/role">
+          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Role
+          </button>
+        </NavLink><br /><br />
         <NavLink to="/admin/question">
-          <button disabled type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+          <button  type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
             Manage Question
           </button>
         </NavLink><br /><br />
         <NavLink to="/admin/test">
-          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+          <button disabled type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
             Manage Test
           </button>
         </NavLink><br /><br /><br /><br />
@@ -202,38 +192,24 @@ let Question = () => {
     <div style={{width: "100%", paddingTop: "9%", paddingLeft: "5%"}}>
     <h2><b>Welcome back, {adminData.fullname}!</b></h2>
     
-    <div style={{width: "100%", display: "flex",  position: "absolute"}}>
+    <div style={{width: "60%",display: "flex",  position: "absolute"}}>
         <br />
         <br />
         <table className="table">
             <thead>
-                <th>ID</th>
-                <th>Test</th>
-                <th>Question Detail</th>
-                <th>Answer</th>
-                <th>Image</th>
-<<<<<<< Updated upstream
-                <th><button onClick={handleShow}>Create</button></th>
-=======
-                <th style={{width: "20%"}}>Action</th>
->>>>>>> Stashed changes
+                <th>Test ID</th>
+                <th>Test Name</th>
+                <th>Test Date</th>
+                <th>Action</th>
             </thead>
             <tbody>
                 {data.map(x => {
                     return (
-                        <tr key={x.question_id}>
-<<<<<<< Updated upstream
-                            <td>{x.test_id}</td>
-                            <td>{x.questionDetail}</td>
-                            <td>{x.correctAnswer}</td>
-=======
-                            <td>{x.question_id}</td>
-                            <td>{x.test_id}</td>
-                            <td>{x.questiondetail}</td>
-                            <td>{x.correctanswer}</td>
->>>>>>> Stashed changes
-                            <td>{x.image}</td>
-                            <td><button style={{height: "30px", width: "100px"}} class="btn btn-outline-primary btn-sm" onClick={() => handleEdit(x)}>Edit</button><button style={{height: "30px", width: "100px"}} class="btn btn-outline-danger btn-sm" onClick={() => handleDelete(x.question_id)}>Delete</button></td>
+                        <tr key={x.test_id}>
+                          <td style={{paddingTop:"28px"}}>{x.test_id}</td>
+                          <td style={{paddingTop:"28px"}}>{x.name}</td>
+                            <td style={{paddingTop:"28px"}}>{x.date}</td>
+                            <td><button style={{height: "30px", width: "100px"}} class="btn btn-outline-primary btn-sm" onClick={() => handleEdit(x)}>Edit</button> <button style={{height: "30px", width: "100px"}} class="btn btn-outline-danger btn-sm" onClick={() => handleDelete(x.test_id)}>Delete</button></td>
                         </tr>
                     )
                 })}
@@ -244,25 +220,31 @@ let Question = () => {
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title><Modal.Title>
-                {editData ? "Edit Question" : "Create Question"}
+                {editData ? "Edit Test" : "Create Test"}
                 </Modal.Title></Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div>
-                <input placeholder="Question ID" value = {question_id} type="text" id="question_id" name="question_id" onChange={e => setQuestion_id(e.target.value)}/>
-                </div><br />
-                <div>
                 <input placeholder="Test ID" value = {test_id} type="text" id="test_id" name="test_id" onChange={e => setTest_id(e.target.value)}/>
                 </div><br />
                 <div>
-                <input placeholder="Detail" value = {questionDetail} type="text" id="questionDetail" name="questionDetail" onChange={e => setQuestionDetail(e.target.value)}/>
+                <input placeholder="Detail" value = {name} type="text" id="name" name="name" onChange={e => setName(e.target.value)}/>
                 </div><br />
                 <div>
-                <input placeholder="Answer" value = {correctAnswer} type="text" id="correctAnswer" name="correctAnswer" onChange={e => setCorrectAnswer(e.target.value)}/>
+                <input
+                            value={date}
+                            type="date"
+                            id="dateofbirth"
+                            name="dateofbirth"
+                            onChange={(e) => {
+                                const selectedDate = new Date(e.target.value);
+                                const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1)
+                                    .toString()
+                                    .padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}`;
+                                setDate(formattedDate);
+                            }}
+                        />
                 </div><br />
-                <div>
-                <input placeholder="Image Link" value = {image} type="text" id="image" name="image" onChange={e => setImage(e.target.value)}/>
-                </div>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="primary" class="btn btn-primary btn-sm" onClick={onSubmit}>
@@ -280,4 +262,4 @@ let Question = () => {
     )
 }
 
-export default Question;
+export default Test;

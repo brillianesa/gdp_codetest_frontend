@@ -35,6 +35,13 @@ const User = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const adminInfo = axios.get("http://localhost:8089/api/user/1001");
+
+    adminInfo.then((response) => {
+          setAdminData(response.data.data)
+          console.log()
+      })
+
     useEffect(() => {
         axios({
             method: "GET",
@@ -160,6 +167,11 @@ const User = () => {
             Manage User
           </button>
         </NavLink><br /><br />
+        <NavLink to="/admin/role">
+          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Role
+          </button>
+        </NavLink><br /><br />
         <NavLink to="/admin/question">
           <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
             Manage Question
@@ -176,7 +188,17 @@ const User = () => {
           </button>
         </NavLink>
     </div>
+<<<<<<< Updated upstream
             <button onClick={handleShow}>CREATE</button>
+=======
+    <div style={{width: "100%", paddingTop: "9%", paddingLeft: "5%"}}>
+    <h2><b>Welcome back, {adminData.fullname}!</b></h2>
+    
+    <div style={{width: "120%",display: "flex",  position: "absolute"}}>
+        <br />
+        <br />
+
+>>>>>>> Stashed changes
             <table className="table">
                 <thead>
                     <th>ID</th>
@@ -185,14 +207,48 @@ const User = () => {
                     <th>Fullname</th>
                     <th>Date of Birth</th>
                     <th>Gender</th>
-                    <th>isCompleted</th>
+                    <th>Completion</th>
                     <th>Address</th>
                     <th>Phone Number</th>
                     <th>Role</th>
+<<<<<<< Updated upstream
                     <th>ACTION</th>
                 </thead>
                 <tbody>
                     {data.map(user => (
+=======
+                    <th>Test</th>
+                    <th>
+                        Action
+                    </th>
+                </thead>
+                
+                <tbody>
+                    {data.map(account => (
+                        <tr key={account.id}>
+                            <td style={{paddingTop:"28px"}}>{account.account_id}</td>
+                            <td style={{paddingTop:"28px"}}>{account.email}</td>
+                            <td style={{paddingTop:"28px"}}>{account.password}</td>
+                            <td style={{paddingTop:"28px"}}>{account.user.fullname}</td>
+                            <td style={{paddingTop:"28px"}}>{account.user.dateofbirth}</td>
+                            <td style={{paddingTop:"28px"}}>{account.user.gender}</td>
+                            <td style={{paddingTop:"28px"}}>{account.user.iscompleted}</td>
+                            <td style={{paddingTop:"28px"}}>{account.user.address}</td>
+                            <td style={{paddingTop:"28px"}}>{account.user.phonenumber}</td>
+                            <td style={{paddingTop:"28px"}}>{account.role.name}</td>
+                            <td style={{paddingTop:"28px"}}>{account.user?.test?.name}</td>
+                            
+                            <td>
+                                <button style={{height: "30px", width: "100px"}} class="btn btn-outline-primary btn-sm" onClick={() => handleEdit(account)}>Edit</button>
+                                <button style={{height: "30px", width: "100px"}} class="btn btn-outline-danger btn-sm" onClick={() => handleDelete(account.id)}>Delete</button>
+                            </td>
+                        </tr>
+                    ))}
+                <button style={{height: "30px", width: "100px"}} class="btn btn-outline-success btn-sm" onClick={handleShow}>CREATE</button>
+                </tbody>
+                {/* <tbody>
+                    {user.map(user => (
+>>>>>>> Stashed changes
                         <tr key={user.id}>
                             <td>{user.id}</td>
                             <td>{user.email}</td>
@@ -213,6 +269,11 @@ const User = () => {
                     ))}
                 </tbody>
             </table>
+<<<<<<< Updated upstream
+=======
+            </div>
+        </div>
+>>>>>>> Stashed changes
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -221,38 +282,52 @@ const User = () => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div>
-                        <label htmlFor="email">Email :</label>
+<<<<<<< Updated upstream
+=======
+                <div hidden>
                         <input
+                            placeholder='ID'
+                            value={id}
+                            type="id"
+                            id="id"
+                            name="id"
+                            onChange={(e) => setId(e.target.value)}
+                        />
+                    </div><br />
+>>>>>>> Stashed changes
+                    <div>
+                        <input
+                            placeholder='Email'
                             value={email}
                             type="email"
                             id="email"
                             name="email"
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                    </div>
+                    </div><br />
                     <div>
-                        <label htmlFor="password">Password :</label>
                         <input
+                            placeholder='Password'
                             value={password}
                             type="password"
                             id="password"
                             name="password"
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                    </div>
+                    </div><br />
                     <div>
-                        <label htmlFor="fullname">Fullname :</label>
                         <input
+                            placeholder='Fullname'
                             value={fullname}
                             type="text"
                             id="fullname"
                             name="fullname"
                             onChange={(e) => setFullname(e.target.value)}
                         />
-                    </div>
+                    </div><br /><br />
                     <div>
                         <label htmlFor="dateOfBirth">Date of Birth :</label>
+                        <br />
                         <input
                             value={dateofbirth}
                             type="date"
@@ -260,10 +335,23 @@ const User = () => {
                             name="dateofbirth"
                             onChange={(e) => setDateOfBirth(e.target.value)}
                         />
+<<<<<<< Updated upstream
                     </div>
+=======
+                    </div><br /><br />
+                    {/* <div>
+                    <label htmlFor="dateOfBirth">Date of Birth :</label>
+                    <DatePicker
+                        type="date"
+                        value={dateofbirth}
+                        dateFormat="yyyy-MM-dd"
+                        onChange={(e) => setDateOfBirth(e.target.value)}
+                        />
+                        </div> */}
+>>>>>>> Stashed changes
                     <div>
-                        <label htmlFor="gender">Gender :</label>
                         <input
+                            placeholder='Gender'
                             value={gender}
                             type="text"
                             id="gender"
@@ -279,9 +367,9 @@ const User = () => {
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select> */}
-                    </div>
+                    </div><br />
                     <div>
-                        <label htmlFor="isCompleted">Is Completed :</label>
+                    <label htmlFor="iscompleted">Completion </label>
                         <input
                             type="checkbox"
                             checked={iscompleted}
@@ -289,28 +377,33 @@ const User = () => {
                             name="iscompleted"
                             onChange={(e) => setIsCompleted(e.target.checked)}
                         />
-                    </div>
+                    </div><br />
                     <div>
-                        <label htmlFor="address">Address :</label>
                         <input
+                            placeholder='Address'
                             value={address}
                             type="text"
                             id="address"
                             name="address"
                             onChange={(e) => setAddress(e.target.value)}
                         />
-                    </div>
+                    </div><br />
                     <div>
-                        <label htmlFor="phonenumber">Phone Number :</label>
                         <input
+                            placeholder='Phone Number'
                             value={phonenumber}
                             type="text"
                             id="phonenumber"
                             name="phonenumber"
                             onChange={(e) => setPhoneNumber(e.target.value)}
                         />
+<<<<<<< Updated upstream
                     </div>
                     <div>
+=======
+                    </div><br />
+                    {/* <div>
+>>>>>>> Stashed changes
                         <label htmlFor="role">Role :</label>
                         <input
                             value={role.name}
@@ -319,7 +412,44 @@ const User = () => {
                             name="role"
                             onChange={(e) => setRole(e.target.value)}
                         />
+<<<<<<< Updated upstream
                     </div>
+=======
+                    </div> */}
+                    <div>
+                    <select
+                            value={role_id}
+                            id="role_id"
+                            name="role_id"
+                            onChange={(e) => setRoleID(e.target.value)}
+                        >
+                            {role.map(x => (
+                                <option key={x.role_id} value={x.role_id}>{x.name}</option>
+                            ))}
+                            
+                            
+                        </select>
+                        </div><br />
+                        <div>
+                        <select
+                            value={test_id}
+                            id="test_id"
+                            name="test_id"
+                            onChange={(e) => setTestID(e.target.value)}
+                        >
+                            {test.map(x => (
+                                <option key={x.test_id} value={x.test_id}>{x.name}</option>
+                            ))}
+                            
+                            
+                        </select>
+                        </div>
+                        
+                        
+
+
+                        
+>>>>>>> Stashed changes
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
