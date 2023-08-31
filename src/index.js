@@ -11,6 +11,7 @@ import Admin from './component/page/admin';
 import Question from './component/page/question';
 import UserTest from './component/template/user';
 import User from './component/page/user';
+import Result from './component/template/result';
 import Test from './component/template/test';
 import Role from './component/page/role';
 
@@ -28,6 +29,7 @@ root.render(
         <Route path="/admin/test" element={<Test/>}/>
         <Route path="/admin/role" element={<Role/>}/>
         <Route path="/user" element={<UserTest/>}/>
+        <Route path="/result" element={<Result/>}/>
         <Route index element={<Home/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
