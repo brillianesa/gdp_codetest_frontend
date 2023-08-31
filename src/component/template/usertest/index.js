@@ -40,7 +40,6 @@ let UserTest = (props) => {
     const handleShow = () => setShow(true);
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
-
     const [ datascore, setScoreData ] = useState([{}])
     const[score, setScore] = useState([{}]);
     const[score_id, setScoreID] = useState(0);
@@ -54,6 +53,7 @@ let UserTest = (props) => {
     const [ test_id, setTestID ] = useState(0);
 
     const [refNumber, setRefNumber] = useState(0);
+    const [ completeTest, setCompleteTest ] = useState("");
 
     const userInfo = axios.get("http://localhost:8089/api/user/78");
     
@@ -175,10 +175,10 @@ let UserTest = (props) => {
         </div>      
     </div>
     <div style={{width: "100%", height: "100%", paddingTop: "24%"}}>
-    <div style={{width: "80%", display: "flex",  position: "absolute", paddingLeft: "20%"}}>
+    <div style={{width: "80%", display: "flex",  position: "relative", paddingLeft: "20%"}}>
         <br />
         <br />
-        <table className="table">
+        <table className="table" style={{width:"100%"}}>
             <thead style={{textAlign: "left"}}>
                 <th></th>
                 
@@ -190,12 +190,13 @@ let UserTest = (props) => {
                 <td style={{textAlign: "center", top: "1000"}}><img src={data[refNumber]?.question?.image} width="300"></img></td>
               </tr>
               <tr>
-                <td>
-                <button onClick={() => handleEdit(data[refNumber])} class="btn btn-outline-success btn-sm">Answer</button>
+                <td style={{width: "41%"}}>
+                  <button onClick={() => refNumber>0 ? setRefNumber(refNumber-1) : setRefNumber(0)} class="btn btn-outline-danger btn-sm">Back</button>
                 </td>
                 
                 <td>
-                <button onClick={() => refNumber>0 ? setRefNumber(refNumber-1) : setRefNumber(0)} class="btn btn-outline-danger btn-sm" style={{float: "right"}}>Back</button>
+                <button onClick={() => handleEdit(data[refNumber])} class="btn btn-outline-primary btn-sm">Answer</button>
+                <button onClick={() => refNumber < 4 ? setRefNumber(refNumber+1) : setRefNumber(4)} style={{float: "right"}} class="btn btn-outline-success btn-sm">Next</button>
                 </td>
               </tr>
             </tbody>
@@ -227,7 +228,7 @@ let UserTest = (props) => {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" class="btn btn-primary btn-sm" onClick={() => {onSubmit(); refNumber < 4 ? setRefNumber(refNumber+1) : setRefNumber(4)}}>
+                <Button variant="primary" class="btn btn-primary btn-sm" onClick={() => {onSubmit()}}>
                 Save
                 </Button>
                 <Button variant="secondary" class="btn btn-secondary btn-sm" onClick={handleClose}>
@@ -236,7 +237,67 @@ let UserTest = (props) => {
             </Modal.Footer>
         </Modal>
         </div>
-    </div>
+    <div style={{position: "relative", width: "100%", paddingTop: "6%"}}>
+        <MDBFooter bgColor='light' className='text-center text-lg-left'>
+        <MDBContainer className='p-4'>
+          <MDBRow>
+            <MDBCol lg='6' md='12' className='mb-4 mb-md-0'>
+              <h5 className='text-uppercase' style={{color: "black", textAlign: "left"}}>Bumi Amartha Teknologi Mandiri</h5>
+
+              <p style={{color: "black", textAlign: "justify", fontSize: "90%"}}>
+              PT. Bumi Amartha Teknologi Mandiri (AMARTEK) is a system integrator devoted to offering the highest value to our customers. Amartek provides domain and advisory expertise which comes with Data & Analytics, Outcome based Services, Integration & Automation, Talent Augmentation. Amartek was established in 2018 with the purpose of delivering a large stack of IT services globally.
+              </p>
+            </MDBCol>
+
+          <MDBCol lg='3' md='12' className='mb-4 mb-md-0'>
+            <h5 className='text-uppercase' style={{color: "black", textAlign: "left"}}>About Us</h5>
+            <ul className='list-unstyled mb-0' style={{color: "black", textAlign: "left"}}>
+                <li>
+                  <a style={{textDecoration: "None"}} href='https://www.amartek.id/about/overview' className='text-dark'>
+                    Company Overview
+                  </a>
+                </li>
+                <li>
+                  <a style={{textDecoration: "None"}} href='https://www.amartek.id/about/ceo-notes' className='text-dark'>
+                    CEO Notes
+                  </a>
+                </li>
+                <li>
+                  <a style={{textDecoration: "None"}} href='https://www.amartek.id/about/people' className='text-dark'>
+                    Executive Profiles
+                  </a>
+                </li>
+              </ul>
+          </MDBCol>
+
+          <MDBCol lg='3' md='12' className='mb-4 mb-md-0'>
+          <h5 className='text-uppercase' style={{color: "black", textAlign: "left"}}>Contact</h5>
+          <div>
+          <p style={{color: "black", textAlign: "left"}}>
+                <MDBIcon icon="home" className="me-2" />
+                Chase Plaza 9th Floor, Jl Jend. Sudirman Kav 21, Karet, Setiabudi, Jakarta Selatan 12920. Indonesia
+              </p>
+              <p style={{color: "black", textAlign: "left"}}>
+                <MDBIcon icon="envelope" className="me-3" />
+                  sales@batmandiri.com
+              </p>
+              <p style={{color: "black", textAlign: "left"}}>
+                <MDBIcon icon="phone" className="me-3" /> +62 21 3973 7000
+              </p>
+        </div>
+            </MDBCol>
+        </MDBRow>
+      </MDBContainer>
+
+      <div className='text-center p-3' style={{ backgroundColor: 'black' }}>
+        &copy; {new Date().getFullYear()} Copyright:{' '}
+        <a className='text-white' href='https://www.amartek.id/'>
+          AMARTEK
+        </a>
+      </div>
+    </MDBFooter>
+      </div>
+      </div>
     </>
     )
 }

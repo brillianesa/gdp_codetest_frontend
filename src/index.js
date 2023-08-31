@@ -14,6 +14,7 @@ import User from './component/page/user';
 import Test from './component/test';
 import Login from './component/page/login';
 import Role from './component/page/role';
+import Score from './component/page/score';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -27,6 +28,7 @@ root.render(
         <Route path="/admin/user" element={<User/>}/>
         <Route path="/admin/question" element={<Question/>}/>
         <Route path="/admin/test" element={<Test/>}/>
+        <Route path="/admin/score" element={<Score/>}/>
         <Route path="/user" element={<UserTest/>}/>
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/admin/role" element={<Role/>}></Route>

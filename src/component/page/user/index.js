@@ -12,6 +12,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 const User = () => {
+    const [ adminData, setAdminData ] = useState([{}])
     const [data, setData] = useState([]);
     const [show, setShow] = useState(false);
     const [id, setId] = useState(0);
@@ -35,6 +36,13 @@ const User = () => {
     const [ user_id, setUserID ]= useState(0);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const adminInfo = axios.get("http://localhost:8089/api/user/78");
+
+    adminInfo.then((response) => {
+          setAdminData(response.data.data)
+          console.log()
+      })
 
     useEffect(() => {
         axios({
@@ -119,6 +127,7 @@ const User = () => {
             if (response.data.status === 200) {
                 console.log(requestData);
                 console.log(response);
+                console.log(requestData)
                 setStatus(true);
             }
         }).catch((error) => {
@@ -220,62 +229,56 @@ const User = () => {
     return (
         <>
         <div>
-          
-          <Navbar collapseOnSelect
-                  expand="lg"
-                  className="bg-body-tertiary fixed-navbar">
-        <Container>
-          <Navbar.Brand href="/home">
-          <img src="https://www.amartek.id/i/logo/weblogo-amartek.png" height="40"/>
-          </Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className='justify-content-end' style={{ width: "100%" }}>
-              <Nav.Link href="https://www.amartek.id/">
-                  <button type="button" class="btn btn-outline-primary btn-sm"><b>About Us</b></button>
-              </Nav.Link>
-              <Nav.Link href="/">
-                  <button type="button" class="btn btn-outline-success btn-sm"><b>Logout</b></button>
-              </Nav.Link>
-              <Nav.Link href="/home">
-                  <img src="https://cdn-icons-png.flaticon.com/512/74/74807.png" width="32" height="32" style={{marginTop: "12%", marginLeft: "30%"}} />
-              </Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-      </div>
-      <div style={{width: "100%", height: "100%", display: "flex",  position: "absolute"}}>
-        <div style={{width: "30%", height: "100%", paddingTop: "9%", paddingBottom: "1%", backgroundImage: "linear-gradient(grey 44.5%, white 40%, #bfbfbf 100%)", boxShadow: "0px 0px 10px black", textAlign: "center"}}>
-          <img src='https://p7.hiclipart.com/preview/355/848/997/computer-icons-user-profile-google-account-photos-icon-account.jpg' class="rounded-circle center" width="100" height="100"/>
-          <h4 style={{color: "white", paddingTop: "2%", paddingBottom: "6%"}}><b></b></h4>
-          <br />
-            <NavLink to="/admin/user">
-              <button disabled type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
-                Manage User
-              </button>
-            </NavLink><br /><br />
-            <NavLink to="/admin/role">
-              <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
-                Manage Role
-              </button>
-            </NavLink><br /><br />
-            <NavLink to="/admin/question">
-              <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
-                Manage Question
-              </button>
-            </NavLink><br /><br />
-            <NavLink to="/admin/test">
-              <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
-                Manage Test
-              </button>
-            </NavLink><br /><br /><br /><br />
-            <NavLink to="/admin">
-              <button type="button" class="btn btn-danger btn-sm btn-block" style={{width:'70%'}}>
-                Back
-              </button>
-            </NavLink>
-        </div>
+            <Navbar collapseOnSelect
+              expand="lg"
+              className="bg-body-tertiary fixed-navbar">
+    <Container>
+      <Navbar.Brand href="/home">
+      <img src="https://www.amartek.id/i/logo/weblogo-amartek.png" height="40"/>
+      </Navbar.Brand>
+      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+      <Navbar.Collapse id="responsive-navbar-nav">
+        <Nav className='justify-content-end' style={{ width: "100%" }}>
+          <Nav.Link href="https://www.amartek.id/">
+              <button type="button" class="btn btn-outline-primary btn-sm"><b>About Us</b></button>
+          </Nav.Link>
+          <Nav.Link href="/">
+              <button type="button" class="btn btn-outline-success btn-sm"><b>Logout</b></button>
+          </Nav.Link>
+          <Nav.Link href="/home">
+              <img src="https://cdn-icons-png.flaticon.com/512/74/74807.png" width="32" height="32" style={{marginTop: "12%", marginLeft: "30%"}} />
+          </Nav.Link>
+        </Nav>
+      </Navbar.Collapse>
+    </Container>
+  </Navbar>
+  </div>
+  <div style={{width: "100%", height: "100%", display: "flex",  position: "absolute"}}>
+    <div style={{width: "30%", height: "100%", paddingTop: "9%", paddingBottom: "1%", backgroundImage: "linear-gradient(grey 44.5%, white 40%, #bfbfbf 100%)", boxShadow: "0px 0px 10px black", textAlign: "center"}}>
+      <img src='https://p7.hiclipart.com/preview/355/848/997/computer-icons-user-profile-google-account-photos-icon-account.jpg' class="rounded-circle center" width="100" height="100"/>
+      <h4 style={{color: "white", paddingTop: "2%", paddingBottom: "6%"}}><b></b></h4>
+      <br />
+        <NavLink to="/admin/user">
+          <button disabled type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage User
+          </button>
+        </NavLink><br /><br />
+        <NavLink to="/admin/question">
+          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Question
+          </button>
+        </NavLink><br /><br />
+        <NavLink to="/admin/test">
+          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Test
+          </button>
+        </NavLink><br /><br /><br /><br />
+        <NavLink to="/admin">
+          <button type="button" class="btn btn-danger btn-sm btn-block" style={{width:'70%'}}>
+            Back
+          </button>
+        </NavLink>
+    </div>
     <div style={{marginTop: '4%', marginLeft: '10px'}}>
 
             <table className="table">
@@ -286,35 +289,38 @@ const User = () => {
                     <th>Fullname</th>
                     <th>Date of Birth</th>
                     <th>Gender</th>
-                    <th>Completion Status</th>
+                    <th>isCompleted</th>
                     <th>Address</th>
                     <th>Phone Number</th>
                     <th>Role</th>
-                    <th>Test Package</th>
-                    <th>ACTION</th>
+                    <th>Test</th>
+                    <th>
+                        Action
+                    </th>
                 </thead>
-                <button onClick={handleShow}>CREATE</button>
+                
                 <tbody>
                     {data.map(account => (
                         <tr key={account.id}>
-                            <td>{account.account_id}</td>
-                            <td>{account.email}</td>
-                            <td>{account.password}</td>
-                            <td>{account.user.fullname}</td>
-                            <td>{account.user.dateofbirth}</td>
-                            <td>{account.user.gender}</td>
-                            <td>{account.user.iscompleted}</td>
-                            <td>{account.user.address}</td>
-                            <td>{account.user.phonenumber}</td>
-                            <td>{account.role.name}</td>
-                            <td>{account.user.test.name}</td>
+                            <td style={{paddingTop:"28px"}}>{account.account_id}</td>
+                            <td style={{paddingTop:"28px"}}>{account.email}</td>
+                            <td style={{paddingTop:"28px"}}>{account.password}</td>
+                            <td style={{paddingTop:"28px"}}>{account.user.fullname}</td>
+                            <td style={{paddingTop:"28px"}}>{account.user.dateofbirth}</td>
+                            <td style={{paddingTop:"28px"}}>{account.user.gender}</td>
+                            <td style={{paddingTop:"28px"}}>{account.user.iscompleted}</td>
+                            <td style={{paddingTop:"28px"}}>{account.user.address}</td>
+                            <td style={{paddingTop:"28px"}}>{account.user.phonenumber}</td>
+                            <td style={{paddingTop:"28px"}}>{account.role.name}</td>
+                            <td style={{paddingTop:"28px"}}>{account.user?.test?.name}</td>
                             
                             <td>
-                                <button onClick={() => handleEdit(account)}>Edit</button> | 
-                                <button onClick={() => handleDelete(account.id)}>Delete</button>
+                                <button style={{height: "30px", width: "100px"}} class="btn btn-outline-primary btn-sm" onClick={() => handleEdit(account)}>Edit</button>
+                                <button style={{height: "30px", width: "100px"}} class="btn btn-outline-danger btn-sm" onClick={() => handleDelete(account.id)}>Delete</button>
                             </td>
                         </tr>
                     ))}
+                <button style={{height: "30px", width: "100px"}} class="btn btn-outline-success btn-sm" onClick={handleShow}>CREATE</button>
                 </tbody>
                 {/* <tbody>
                     {user.map(user => (
@@ -337,6 +343,7 @@ const User = () => {
                 </tbody> */}
             </table>
             </div>
+        </div>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -346,47 +353,48 @@ const User = () => {
                 </Modal.Header>
                 <Modal.Body>
                 <div hidden>
-                        <label htmlFor="email">ID :</label>
                         <input
+                            placeholder='ID'
                             value={id}
                             type="id"
                             id="id"
                             name="id"
                             onChange={(e) => setId(e.target.value)}
                         />
-                    </div>
+                    </div><br />
                     <div>
-                        <label htmlFor="email">Email :</label>
                         <input
+                            placeholder='Email'
                             value={email}
                             type="email"
                             id="email"
                             name="email"
                             onChange={(e) => setEmail(e.target.value)}
                         />
-                    </div>
+                    </div><br />
                     <div>
-                        <label htmlFor="password">Password :</label>
                         <input
+                            placeholder='Password'
                             value={password}
                             type="password"
                             id="password"
                             name="password"
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                    </div>
+                    </div><br />
                     <div>
-                        <label htmlFor="fullname">Fullname :</label>
                         <input
+                            placeholder='Fullname'
                             value={fullname}
                             type="text"
                             id="fullname"
                             name="fullname"
                             onChange={(e) => setFullname(e.target.value)}
                         />
-                    </div>
+                    </div><br /><br />
                     <div>
                         <label htmlFor="dateOfBirth">Date of Birth :</label>
+                        <br />
                         <input
                             value={dateofbirth}
                             type="date"
@@ -400,7 +408,7 @@ const User = () => {
                                 setDateOfBirth(formattedDate);
                             }}
                         />
-                    </div>
+                    </div><br /><br />
                     {/* <div>
                     <label htmlFor="dateOfBirth">Date of Birth :</label>
                     <DatePicker
@@ -411,8 +419,8 @@ const User = () => {
                         />
                         </div> */}
                     <div>
-                        <label htmlFor="gender">Gender :</label>
                         <input
+                            placeholder='Gender'
                             value={gender}
                             type="text"
                             id="gender"
@@ -428,9 +436,9 @@ const User = () => {
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select> */}
-                    </div>
+                    </div><br />
                     <div>
-                        <label htmlFor="isCompleted">Is Completed :</label>
+                    <label htmlFor="iscompleted">Completion </label>
                         <input
                             type="checkbox"
                             checked={iscompleted}
@@ -438,20 +446,20 @@ const User = () => {
                             name="iscompleted"
                             onChange={(e) => setIsCompleted(e.target.checked)}
                         />
-                    </div>
+                    </div><br />
                     <div>
-                        <label htmlFor="address">Address :</label>
                         <input
+                            placeholder='Address'
                             value={address}
                             type="text"
                             id="address"
                             name="address"
                             onChange={(e) => setAddress(e.target.value)}
                         />
-                    </div>
+                    </div><br />
                     <div>
-                        <label htmlFor="phonenumber">Phone Number :</label>
                         <input
+                            placeholder='Phone Number'
                             value={phonenumber}
                             type="text"
                             id="phonenumber"
@@ -459,6 +467,16 @@ const User = () => {
                             onChange={(e) => setPhoneNumber(e.target.value)}
                         />
                     </div>
+                    {/* <div>
+                        <label htmlFor="role">Role :</label>
+                        <input
+                            value={role.role_id}
+                            type="text"
+                            id="role"
+                            name="role"
+                            onChange={(e) => setRoleID(e.target.value)}
+                        />
+                    </div> */}
                     <div>
                     <select
                             value={role_id}
@@ -472,7 +490,7 @@ const User = () => {
                             
                             
                         </select>
-                        </div>
+                        </div><br />
                         <div>
                         <select
                             value={test_id}
@@ -503,7 +521,6 @@ const User = () => {
                 </Modal.Footer>
             </Modal>
 
-        </div>
         </>
     );
 };
