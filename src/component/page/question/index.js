@@ -215,10 +215,10 @@ let Question = () => {
         </NavLink>
     </div>
     
-    <div style={{width: "100%", paddingTop: "9%", paddingLeft: "5%"}}>
+    <div style={{width: "100%", height: "100%", paddingTop: "9%", paddingLeft: "5%"}}>
     <h2><b>Welcome back, {adminData.fullname}!</b></h2>
     
-    <div style={{display: "flex",  position: "absolute"}}>
+    <div style={{width: "100%", height: "100%", display: "flex",  position: "absolute"}}>
         <br />
         <br />
         <table className="table">
@@ -228,15 +228,14 @@ let Question = () => {
                 <th>Question Detail</th>
                 <th>Answer</th>
                 <th>Image</th>
-                <th>Action</th>
-                <th><button onClick={handleShow}>Create</button></th>
+                <th style={{width: "20%"}}>Action</th>
             </thead>
             <tbody>
                 {data.map(x => {
                     return (
                         <tr key={x.question_id}>
                           <td>{x.question_id}</td>
-                          <td>{x.test?.test_id}</td>
+                          <td>{x?.test?.test_id}</td>
                             <td>{x.questiondetail}</td>
                             <td>{x.correctanswer}</td>
                             <td>{x.image}</td>
