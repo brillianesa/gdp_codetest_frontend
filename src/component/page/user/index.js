@@ -8,6 +8,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import { Route, NavLink, HashRouter } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const User = () => {
     const [ adminData, setAdminData ] = useState([{}])
@@ -23,15 +25,16 @@ const User = () => {
     const [phonenumber, setPhoneNumber] = useState("");
     const [password, setPassword] = useState("");
     const [account, setAccount] = useState("");
-    const [role, setRole] = useState("");
+    const [ account_id, setAccountID ] = useState(0);
+    const [role, setRole] = useState([]);
+    const [role_id, setRoleID] = useState(0)
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
-    const adminInfo = axios.get("http://localhost:8089/api/user/1001");
+    const [test, setTest] = useState([]);
+    const [ test_id, setTestID ] = useState(0);
+    const [ user, setUser ] = useState([]);
+    const [ user_id, setUserID ]= useState(0);
 
-    adminInfo.then((response) => {
-          setAdminData(response.data.data)
-      })
-      
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -48,7 +51,39 @@ const User = () => {
             url: "http://localhost:8089/api/account/"
         }).then((response) => {
             setData(response.data.data);
-            console.log(response.data.data[0].role);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
+    useEffect(() => {
+        axios({
+            method: "GET",
+            url: "http://localhost:8089/api/role/"
+        }).then((response) => {
+            setRole(response.data.data);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
+    useEffect(() => {
+        axios({
+            method: "GET",
+            url: "http://localhost:8089/api/test/"
+        }).then((response) => {
+            setTest(response.data.data);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }, []);
+
+    useEffect(() => {
+        axios({
+            method: "GET",
+            url: "http://localhost:8089/api/user/"
+        }).then((response) => {
+            setUser(response.data.data); 
         }).catch((error) => {
             console.log(error);
         });
@@ -67,12 +102,22 @@ const User = () => {
             "address": address,
             "phonenumber": phonenumber,
             "password": password,
-            "role": role
+            "role": {
+                "role_id": role_id
+            },
+            "user": {
+                "user_id": user_id
+            },
+            "test": {
+                "test_id": test_id
+            }
+                
+
         };
         
 
         axios({
-            method: "POST", 
+            method: editData ? "POST" : "POST",
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -125,10 +170,57 @@ const User = () => {
 
       const handleEdit = (rowData) => {
         setEditData(rowData);
-        setId(rowData.id);
-        setFullname(rowData.fullname);
+        console.log(rowData);
+        console.log(rowData.account_id);
+        console.log(rowData.email);
+        console.log(rowData.password);
+        console.log(rowData.user.fullname);
+        console.log(rowData.user.dateofbirth);
+        console.log(rowData.user.gender);
+        console.log(rowData.user.iscompleted);
+        console.log(rowData.user.address);
+        console.log(rowData.user.phonenumber);
+        console.log(rowData.role.role_id);
+        // console.log(rowData.user_id);
+        console.log(rowData.user.test.test_id);
+        if (rowData) {
+            setId(rowData.account_id);
+            setEmail(rowData.email);
+            setPassword(rowData.password);
+            setFullname(rowData.user.fullname);
+            const selectedDate = new Date(rowData.user.dateofbirth);
+            const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1)
+                .toString()
+                .padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}`;
+            setDateOfBirth(formattedDate);
+            setGender(rowData.user.gender);
+            setIsCompleted(rowData.user.iscompleted);
+            setAddress(rowData.user.address);
+            setPhoneNumber(rowData.user.phonenumber);
+            setRoleID(rowData.role.role_id);
+            // setUserID(rowData.user_id);
+            setTestID(rowData.user.test.test_id);
+        }
         handleShow();
-      }
+    };
+    
+    //   let requestData = {
+    //     "id": id,
+    //     "email": email,
+    //     "fullname": fullname,
+    //     "dateofbirth": dateofbirth,
+    //     "gender": gender,
+    //     "iscompleted": iscompleted,
+    //     "address": address,
+    //     "phonenumber": phonenumber,
+    //     "password": password,
+    //     "role": {
+    //         "role_id": role_id
+    //     }
+            
+
+    // };
+    
 
     return (
         <>
@@ -188,9 +280,6 @@ const User = () => {
           </button>
         </NavLink>
     </div>
-<<<<<<< Updated upstream
-            <button onClick={handleShow}>CREATE</button>
-=======
     <div style={{width: "100%", paddingTop: "9%", paddingLeft: "5%"}}>
     <h2><b>Welcome back, {adminData.fullname}!</b></h2>
     
@@ -198,7 +287,6 @@ const User = () => {
         <br />
         <br />
 
->>>>>>> Stashed changes
             <table className="table">
                 <thead>
                     <th>ID</th>
@@ -211,12 +299,6 @@ const User = () => {
                     <th>Address</th>
                     <th>Phone Number</th>
                     <th>Role</th>
-<<<<<<< Updated upstream
-                    <th>ACTION</th>
-                </thead>
-                <tbody>
-                    {data.map(user => (
-=======
                     <th>Test</th>
                     <th>
                         Action
@@ -248,18 +330,15 @@ const User = () => {
                 </tbody>
                 {/* <tbody>
                     {user.map(user => (
->>>>>>> Stashed changes
                         <tr key={user.id}>
-                            <td>{user.id}</td>
-                            <td>{user.email}</td>
-                            <td>{user.password}</td>
                             <td>{user.fullname}</td>
                             <td>{user.dateofbirth}</td>
                             <td>{user.gender}</td>
                             <td>{user.iscompleted}</td>
                             <td>{user.address}</td>
                             <td>{user.phonenumber}</td>
-                            <td>{user.role.name}</td>
+                            <td>{account?.role?.name}</td>
+                            <td>{user.test.name}</td>
                             
                             <td>
                                 <button onClick={() => handleEdit(user)}>Edit</button> | 
@@ -267,13 +346,10 @@ const User = () => {
                             </td>
                         </tr>
                     ))}
-                </tbody>
+                </tbody> */}
             </table>
-<<<<<<< Updated upstream
-=======
             </div>
         </div>
->>>>>>> Stashed changes
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -282,8 +358,6 @@ const User = () => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-<<<<<<< Updated upstream
-=======
                 <div hidden>
                         <input
                             placeholder='ID'
@@ -294,7 +368,6 @@ const User = () => {
                             onChange={(e) => setId(e.target.value)}
                         />
                     </div><br />
->>>>>>> Stashed changes
                     <div>
                         <input
                             placeholder='Email'
@@ -333,11 +406,14 @@ const User = () => {
                             type="date"
                             id="dateofbirth"
                             name="dateofbirth"
-                            onChange={(e) => setDateOfBirth(e.target.value)}
+                            onChange={(e) => {
+                                const selectedDate = new Date(e.target.value);
+                                const formattedDate = `${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1)
+                                    .toString()
+                                    .padStart(2, '0')}-${selectedDate.getDate().toString().padStart(2, '0')}`;
+                                setDateOfBirth(formattedDate);
+                            }}
                         />
-<<<<<<< Updated upstream
-                    </div>
-=======
                     </div><br /><br />
                     {/* <div>
                     <label htmlFor="dateOfBirth">Date of Birth :</label>
@@ -348,7 +424,6 @@ const User = () => {
                         onChange={(e) => setDateOfBirth(e.target.value)}
                         />
                         </div> */}
->>>>>>> Stashed changes
                     <div>
                         <input
                             placeholder='Gender'
@@ -397,24 +472,16 @@ const User = () => {
                             name="phonenumber"
                             onChange={(e) => setPhoneNumber(e.target.value)}
                         />
-<<<<<<< Updated upstream
-                    </div>
-                    <div>
-=======
                     </div><br />
                     {/* <div>
->>>>>>> Stashed changes
                         <label htmlFor="role">Role :</label>
                         <input
-                            value={role.name}
+                            value={role.role_id}
                             type="text"
                             id="role"
                             name="role"
-                            onChange={(e) => setRole(e.target.value)}
+                            onChange={(e) => setRoleID(e.target.value)}
                         />
-<<<<<<< Updated upstream
-                    </div>
-=======
                     </div> */}
                     <div>
                     <select
@@ -449,7 +516,6 @@ const User = () => {
 
 
                         
->>>>>>> Stashed changes
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>

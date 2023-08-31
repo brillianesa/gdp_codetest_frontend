@@ -29,41 +29,17 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'mdbreact/dist/css/mdb.css';
 
-<<<<<<< Updated upstream
-let User = (props) => {
-    const [ data, setData ] = useState([{}])
-    const [ adminData, setAdminData ] = useState([{}])
-    const [ show, setShow ] = useState(false)
-    const [ question_id, setQuestion_id ] = useState(0)
-    const [ test_id, setTest_id ] = useState(0)
-    const [ questionDetail, setQuestionDetail ] = useState("")
-=======
 let UserTest = (props) => {
     const [ data, setData ] = useState([{}])
     const [ userData, setUserData ] = useState([{}])
     const [ show, setShow ] = useState(false)
     
->>>>>>> Stashed changes
     const [ correctAnswer, setCorrectAnswer ] = useState("")
     const [ image, setImage ] = useState("")
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
-<<<<<<< Updated upstream
-    const adminInfo = axios.get("http://localhost:8089/api/user/1001");
-
-    adminInfo.then((response) => {
-          setAdminData(response.data.data)
-          console.log()
-      })
-
-    useEffect(() => {
-        axios({
-            method: "GET",
-            url: "http://localhost:8089/api/question/"
-=======
-
     const [ datascore, setScoreData ] = useState([{}])
     const[score, setScore] = useState([{}]);
     const[score_id, setScoreID] = useState(0);
@@ -78,6 +54,7 @@ let UserTest = (props) => {
 
     //Used to move to the next / previous question page
     const [refNumber, setRefNumber] = useState(0);
+    const [ completeTest, setCompleteTest ] = useState("");
 
     const userInfo = axios.get("http://localhost:8089/api/user/1001");
     
@@ -91,7 +68,6 @@ let UserTest = (props) => {
         axios({
             method: "GET",
             url: "http://localhost:8089/api/score/account/1001"
->>>>>>> Stashed changes
         }).then((response) => {
             setData(response.data.data)
             console.log()
@@ -100,8 +76,6 @@ let UserTest = (props) => {
         })
     }, [])
 
-<<<<<<< Updated upstream
-=======
       useEffect(() => {
         axios({
             method: "GET",
@@ -114,21 +88,10 @@ let UserTest = (props) => {
         })
     }, [])
 
->>>>>>> Stashed changes
     const onSubmit = () => {
         handleClose();
 
         let requestData = {
-<<<<<<< Updated upstream
-            "question_id" : question_id,
-            "test" : {
-              "test_id":  test_id
-            },
-            "questiondetail": questionDetail,
-            "correctanswer": correctAnswer,
-            "image": image
-        }
-=======
           "score_id": score_id,
           "account": {
             "account_id" : account_id
@@ -140,21 +103,11 @@ let UserTest = (props) => {
             "useranswer": useranswer
         }
 
->>>>>>> Stashed changes
         axios({
             method: editData ? "POST" : "POST",
             headers: {
               'Content-Type': 'application/json',
             },
-<<<<<<< Updated upstream
-            url: "http://localhost:8089/api/question/",
-            data: JSON.stringify(requestData)
-          }).then((response) => {
-            if (response.data.status === 200) {
-              setStatus(true);
-            }
-          }).catch((error) => {
-=======
             url: "http://localhost:8089/api/score/",
             data: JSON.stringify(requestData)
           }).then((response) => {
@@ -164,7 +117,6 @@ let UserTest = (props) => {
             }
           }).catch((error) => {
             console.log(requestData)
->>>>>>> Stashed changes
             console.log(error);
           }).finally(() => {
             setStatus(false);
@@ -174,15 +126,6 @@ let UserTest = (props) => {
 
       const handleEdit = (rowData) => {
         setEditData(rowData);
-<<<<<<< Updated upstream
-        setQuestion_id(rowData.question_id);
-        setTest_id(rowData.test_id);
-        setQuestionDetail(rowData.questiondetail);
-        setCorrectAnswer(rowData.correctanswer);
-        setImage(rowData.image);
-        handleShow();
-      }
-=======
         setImage(rowData.question.image);
         setScoreID(rowData.score_id);
         setAccountID(rowData.account.account_id);
@@ -193,7 +136,6 @@ let UserTest = (props) => {
         handleShow();
       
     }
->>>>>>> Stashed changes
     
     return (
         <>
@@ -229,54 +171,17 @@ let UserTest = (props) => {
             <img src='https://p7.hiclipart.com/preview/355/848/997/computer-icons-user-profile-google-account-photos-icon-account.jpg' class="rounded-circle center" width="100" height="100"/>
         </div> 
         <div style={{width: "60%", height: "100%", color: "white", paddingTop: "9.4%", paddingBottom: "1%"}}>
-<<<<<<< Updated upstream
-        <h2 style={{textShadow: "0px 0px 20px white"}}><b>Welcome back, {adminData.fullname}!</b></h2>
-=======
         <h2 style={{textShadow: "0px 0px 20px white"}}><b>Welcome back, {userData.fullname}!</b></h2>
->>>>>>> Stashed changes
         <p style={{textShadow: "0px 0px 20px white"}}>In this exam you are given a set of 5 questions to test your knowledge in database and programming language skills. You can view your score after submission. <b>Good luck!</b></p>
         <p></p>
         </div>      
     </div>
     <div style={{width: "100%", height: "100%", paddingTop: "24%"}}>
-    <div style={{width: "80%", display: "flex",  position: "absolute", paddingLeft: "20%"}}>
+    <div style={{width: "80%", display: "flex",  position: "relative", paddingLeft: "20%"}}>
         <br />
         <br />
-        <table className="table">
+        <table className="table" style={{width:"100%"}}>
             <thead style={{textAlign: "left"}}>
-<<<<<<< Updated upstream
-                <th>Question</th>
-                <th style={{textAlign: "center"}}>Image</th>
-            </thead>
-            <tbody style={{textAlign: "left"}}>
-                {data.map(x => {
-                    return (
-                      <>
-                        <tr key={x.question_id}>
-                            <td>{x.questiondetail}</td>
-                            
-                            <td style={{textAlign: "center", top: "1000"}}><img src={x.image} width="300"></img></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <button onClick={() => handleEdit(x)} class="btn btn-outline-success btn-sm">Answer</button>
-                            </td>
-                            <td>
-                                
-                            </td>
-                        </tr>
-                        <tr style={{borderBottom: "hidden"}}>
-                            <td>
-
-                            </td>
-                            <td>
-                              
-                            </td>
-                        </tr>
-                      </>
-                    )
-                })}
-=======
                 <th></th>
                 
                 <th style={{textAlign: "center"}}></th>
@@ -287,15 +192,15 @@ let UserTest = (props) => {
                 <td style={{textAlign: "center", top: "1000"}}><img src={data[refNumber]?.question?.image} width="300"></img></td>
               </tr>
               <tr>
-                <td>
-                <button onClick={() => handleEdit(data[refNumber])} class="btn btn-outline-success btn-sm">Answer</button>
+                <td style={{width: "41%"}}>
+                  <button onClick={() => refNumber>0 ? setRefNumber(refNumber-1) : setRefNumber(0)} class="btn btn-outline-danger btn-sm">Back</button>
                 </td>
                 
                 <td>
-                <button onClick={() => refNumber>0 ? setRefNumber(refNumber-1) : setRefNumber(0)} class="btn btn-outline-danger btn-sm" style={{float: "right"}}>Back</button>
+                <button onClick={() => handleEdit(data[refNumber])} class="btn btn-outline-primary btn-sm">Answer</button>
+                <button onClick={() => refNumber < 4 ? setRefNumber(refNumber+1) : setRefNumber(4)} style={{float: "right"}} class="btn btn-outline-success btn-sm">Next</button>
                 </td>
               </tr>
->>>>>>> Stashed changes
             </tbody>
         </table>
 
@@ -310,19 +215,6 @@ let UserTest = (props) => {
                 <img src={image} width="300"></img>
                 <br />
                 <b>{questionDetail}</b>
-<<<<<<< Updated upstream
-                <input hidden placeholder="Question ID" value = {question_id} type="text" id="question_id" name="question_id" onChange={e => setQuestion_id(e.target.value)}/>
-                </div><br />
-                <div>
-                <textarea placeholder="Answer" rows="8" style={{width: "100%", height: "100%"}} value = {correctAnswer} type="text" id="correctAnswer" name="correctAnswer" onChange={e => setCorrectAnswer(e.target.value)}/>
-                </div><br />
-                <div>
-                <input hidden placeholder="Test ID" value = {test_id} type="text" id="test_id" name="test_id" onChange={e => setTest_id(e.target.value)}/>
-                </div>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="primary" class="btn btn-primary btn-sm" onClick={onSubmit}>
-=======
                 <div hidden>
                 <input  placeholder="Score ID" value = {score_id} type="text" id="score_id" name="score_id" onChange={e => setScoreID(e.target.value)}/>
                 </div>
@@ -338,8 +230,7 @@ let UserTest = (props) => {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" class="btn btn-primary btn-sm" onClick={() => {onSubmit(); refNumber < 4 ? setRefNumber(refNumber+1) : setRefNumber(4)}}>
->>>>>>> Stashed changes
+                <Button variant="primary" class="btn btn-primary btn-sm" onClick={() => {onSubmit()}}>
                 Save
                 </Button>
                 <Button variant="secondary" class="btn btn-secondary btn-sm" onClick={handleClose}>
@@ -348,13 +239,69 @@ let UserTest = (props) => {
             </Modal.Footer>
         </Modal>
         </div>
-    </div>
+    <div style={{position: "relative", width: "100%", paddingTop: "6%"}}>
+        <MDBFooter bgColor='light' className='text-center text-lg-left'>
+        <MDBContainer className='p-4'>
+          <MDBRow>
+            <MDBCol lg='6' md='12' className='mb-4 mb-md-0'>
+              <h5 className='text-uppercase' style={{color: "black", textAlign: "left"}}>Bumi Amartha Teknologi Mandiri</h5>
+
+              <p style={{color: "black", textAlign: "justify", fontSize: "90%"}}>
+              PT. Bumi Amartha Teknologi Mandiri (AMARTEK) is a system integrator devoted to offering the highest value to our customers. Amartek provides domain and advisory expertise which comes with Data & Analytics, Outcome based Services, Integration & Automation, Talent Augmentation. Amartek was established in 2018 with the purpose of delivering a large stack of IT services globally.
+              </p>
+            </MDBCol>
+
+          <MDBCol lg='3' md='12' className='mb-4 mb-md-0'>
+            <h5 className='text-uppercase' style={{color: "black", textAlign: "left"}}>About Us</h5>
+            <ul className='list-unstyled mb-0' style={{color: "black", textAlign: "left"}}>
+                <li>
+                  <a style={{textDecoration: "None"}} href='https://www.amartek.id/about/overview' className='text-dark'>
+                    Company Overview
+                  </a>
+                </li>
+                <li>
+                  <a style={{textDecoration: "None"}} href='https://www.amartek.id/about/ceo-notes' className='text-dark'>
+                    CEO Notes
+                  </a>
+                </li>
+                <li>
+                  <a style={{textDecoration: "None"}} href='https://www.amartek.id/about/people' className='text-dark'>
+                    Executive Profiles
+                  </a>
+                </li>
+              </ul>
+          </MDBCol>
+
+          <MDBCol lg='3' md='12' className='mb-4 mb-md-0'>
+          <h5 className='text-uppercase' style={{color: "black", textAlign: "left"}}>Contact</h5>
+          <div>
+          <p style={{color: "black", textAlign: "left"}}>
+                <MDBIcon icon="home" className="me-2" />
+                Chase Plaza 9th Floor, Jl Jend. Sudirman Kav 21, Karet, Setiabudi, Jakarta Selatan 12920. Indonesia
+              </p>
+              <p style={{color: "black", textAlign: "left"}}>
+                <MDBIcon icon="envelope" className="me-3" />
+                  sales@batmandiri.com
+              </p>
+              <p style={{color: "black", textAlign: "left"}}>
+                <MDBIcon icon="phone" className="me-3" /> +62 21 3973 7000
+              </p>
+        </div>
+            </MDBCol>
+        </MDBRow>
+      </MDBContainer>
+
+      <div className='text-center p-3' style={{ backgroundColor: 'black' }}>
+        &copy; {new Date().getFullYear()} Copyright:{' '}
+        <a className='text-white' href='https://www.amartek.id/'>
+          AMARTEK
+        </a>
+      </div>
+    </MDBFooter>
+      </div>
+      </div>
     </>
     )
 }
 
-<<<<<<< Updated upstream
-export default User;
-=======
 export default UserTest;
->>>>>>> Stashed changes
