@@ -32,24 +32,26 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'mdbreact/dist/css/mdb.css';
 
-let Question = () => {
+let Score = () => {
     const [ data, setData ] = useState([{}])
-    const [ dataTest, setDataTest ] = useState([{}])
+    const [ dataScore, setDataScore ] = useState([{}])
     const [ adminData, setAdminData ] = useState([{}])
     const [ show, setShow ] = useState(false)
-    const [ question_id, setQuestion_id ] = useState(0)
+    const [ score_id, setScoreID ] = useState(0)
+     const [ score, setScore ] = useState(0)
     const [ test, setTest ] = useState([{}])
     const [ test_id, setTestId ] = useState(0)
-    const [ questiondetail, setQuestionDetail ] = useState("")
+    const [ scoredetail, setScoreDetail ] = useState("")
     const [ correctanswer, setCorrectAnswer ] = useState("")
+    const [ useranswer, setUserAnswer ] = useState("")
+    const [ isCompleted, setIsCompleted ] = useState("")
     const [ image, setImage ] = useState("")
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
+    
     const adminInfo = axios.get("http://localhost:8089/api/user/1");
-
-    const onChangeTest = e => setTest(e.target.value);
 
     adminInfo.then((response) => {
           setAdminData(response.data.data)
@@ -58,7 +60,7 @@ let Question = () => {
     useEffect(() => {
         axios({
             method: "GET",
-            url: "http://localhost:8089/api/question/"
+            url: "http://localhost:8089/api/user/"
         }).then((response) => {
             setData(response.data.data)
             console.log()
@@ -67,43 +69,28 @@ let Question = () => {
         })
     }, [])
 
-    useEffect(() => {
-        axios({
-            method: "GET",
-            url: "http://localhost:8089/api/test/"
-        }).then((response) => {
-            setDataTest(response.data.data)
-            console.log()
-        }).catch((error)=> {
-            console.log(error)
-        })
-    }, [])
+    
+
+    
 
     const onSubmit = () => {
         handleClose();
 
         let requestData = {
-            "question_id" : question_id,
-            "test" : {
-              "test_id": test_id
-          },
-            "questiondetail": questiondetail,
-            "correctanswer": correctanswer,
-            "image": image
+            "score_id" : score_id,
+            "score": score
         }
         axios({
             method: editData ? "POST" : "POST",
             headers: {
               'Content-Type': 'application/json',
             },
-            url: "http://localhost:8089/api/question/",
+            url: "http://localhost:8089/api/score/",
             data: JSON.stringify(requestData)
           }).then((response) => {
             if (response.data.status === 200) {
               setStatus(true);
-              console.log(test);
-              console.log(test_id);
-              console.log(test.test_id);
+              console.log(requestData);
             }
           }).catch((error) => {
             console.log(error);
@@ -128,7 +115,7 @@ let Question = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                url: "http://localhost:8089/api/question/" + id,
+                url: "http://localhost:8089/api/score/" + id,
             }).then((response) => {
                 if(response.data.status === 200){
                     setStatus(true)
@@ -144,15 +131,64 @@ let Question = () => {
         });
       };
 
-      const handleEdit = (rowData) => {
-        setEditData(rowData);
-        setQuestion_id(rowData.question_id);
-        setTestId(rowData.test.test_id);
-        setQuestionDetail(rowData.questiondetail);
-        setCorrectAnswer(rowData.correctanswer);
-        setImage(rowData.image);
-        handleShow();
+      const handleEdit = (user_id) => {
+            axios({
+                method: "GET",
+                url: "http://localhost:8089/api/score/account/" + user_id
+            }).then((response) => {
+                setDataScore(response.data.data)
+                console.log(response.data.data)
+            }).catch((error)=> {
+                console.log(error)
+            })
+            handleShow();
       }
+
+     
+
+      const handleTextClick = score_id => e => {
+  
+        dataScore
+          .filter(br => br.score_id === score_id)
+          .forEach(item => {
+            item.score = e.target.value;
+
+            
+            let requestData = {
+                "score_id" : item.score_id,
+                "account" : {
+                "account_id": item.account.account_id,
+                },
+                "question": {
+                    "question_id": item.question.question_id,
+                },
+                "score": item.score,
+                "useranswer": item.useranswer
+            }
+            axios({
+                method: editData ? "POST" : "POST",
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                url: "http://localhost:8089/api/score/",
+                data: JSON.stringify(requestData)
+              }).then((response) => {
+                if (response.data.status === 200) {
+                  setStatus(true);
+                  console.log(requestData);
+                }
+              }).catch((error) => {
+                console.log(error);
+              }).finally(() => {
+                setStatus(false);
+                setEditData(null);
+              });
+          });
+
+        console.log(dataScore);
+
+        
+      };
 
     return (
       <>
@@ -198,9 +234,9 @@ let Question = () => {
             Manage Role
           </button>
         </NavLink><br /><br />
-        <NavLink to="/admin/question">
+        <NavLink to="/admin/score">
           <button disabled type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
-            Manage Question
+            Manage Score
           </button>
         </NavLink><br /><br />
         <NavLink to="/admin/test">
@@ -215,31 +251,29 @@ let Question = () => {
         </NavLink>
     </div>
     
-    <div style={{width: "100%", height: "100%", paddingTop: "9%", paddingLeft: "5%"}}>
+    <div style={{width: "100%", paddingTop: "9%", paddingLeft: "5%"}}>
     <h2><b>Welcome back, {adminData.fullname}!</b></h2>
     
-    <div style={{width: "100%", height: "100%", display: "flex",  position: "absolute"}}>
+    <div style={{display: "flex",  position: "absolute"}}>
         <br />
         <br />
         <table className="table">
             <thead>
-                <th>Question ID</th>
-                <th>Test ID</th>
-                <th>Question Detail</th>
-                <th>Answer</th>
-                <th>Image</th>
-                <th style={{width: "20%"}}>Action</th>
+                <th>Account ID</th>
+                <th>Name</th>
+                <th>Test</th>
+                <th>Completed</th>
+                <th>Action</th>
             </thead>
             <tbody>
                 {data.map(x => {
                     return (
-                        <tr key={x.question_id}>
-                          <td>{x.question_id}</td>
-                          <td>{x?.test?.test_id}</td>
-                            <td>{x.questiondetail}</td>
-                            <td>{x.correctanswer}</td>
-                            <td>{x.image}</td>
-                            <td><button onClick={() => handleEdit(x)}>Edit</button> <button onClick={() => handleDelete(x.question_id)}>Delete</button></td>
+                        <tr key={x.user_id}>
+                            <td>{x.user_id}</td>
+                          <td>{x.fullname}</td>
+                          <td>{x.test?.name}</td>
+                          <td>{x.iscompleted ? "Completed" : "Not Yet"}</td>
+                            <td><button onClick={() => handleEdit(x.user_id)}>View</button></td>
                         </tr>
                     )
                 })}
@@ -249,34 +283,41 @@ let Question = () => {
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <Modal.Title><Modal.Title>
-                {editData ? "Edit Question" : "Create Question"}
+                {editData ? "Edit Score" : "Create Score"}
                 </Modal.Title></Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div>
-                <input placeholder="Question ID" value = {question_id} type="text" id="question_id" name="question_id" onChange={e => setQuestion_id(e.target.value)}/>
-                </div><br />
-                <div>
-                        <select id='test_id' onChange={e => setTestId(e.target.value)} value={test_id}>
-                            {dataTest.map(x => (
-                                <option value={x.test_id}  key={x.test_id}>{x.name} </option>
-                            ))}
-                        </select>              
-                                    {/* <input placeholder="Test ID" value = {test_id} type="text" id="test_id" name="test_id" onChange={e => setTestId(e.target.value)}/> */}
-
-                    </div><br />
-                <div>
-                <input placeholder="Detail" value = {questiondetail} type="text" id="questiondetail" name="questiondetail" onChange={e => setQuestionDetail(e.target.value)}/>
-                </div><br />
-                <div>
-                <input placeholder="Answer" value = {correctanswer} type="text" id="correctanswer" name="correctanswer" onChange={e => setCorrectAnswer(e.target.value)}/>
-                </div><br />
-                <div>
-                <input placeholder="Image Link" value = {image} type="text" id="image" name="image" onChange={e => setImage(e.target.value)}/>
-                </div>
+                <table className="table">
+            <thead>
+                <th>Question ID</th>
+                <th>Question Detail</th>
+                <th>Image</th>
+                <th>Expected</th>
+                <th>Answer</th>
+                <th>Score</th>
+            </thead>
+            <tbody>
+                {dataScore.map(x => {
+                    return (
+                        <tr key={x.score_id}>
+                            <td hidden >{x.score_id}</td>
+                            <td>{x?.question?.question_id}</td>
+                            <td>{x?.question?.questiondetail}</td>
+                            <td><img src= {x?.question?.image} width="50"></img></td>
+                            <td>{x?.question?.correctanswer}</td>
+                          <td>{x.useranswer}</td>
+                          <td hidden><input  placeholder="Score ID" value = {x.score_id} type="text" id="score_id" name="score_id" onChange={e => setScoreID(e.target.value)}/></td>
+                          <td>{
+                <input  placeholder="Score" defaultValue = {x.score} type="text" id="score" name="score" onClick={handleTextClick} onChange={handleTextClick(x.score_id)}/>
+                }</td>
+                        </tr>
+                    )
+                })}
+            </tbody>
+        </table>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" class="btn btn-primary btn-sm" onClick={onSubmit}>
+                <Button variant="primary" class="btn btn-primary btn-sm" onClick={handleClose}>
                 Save
                 </Button>
                 <Button variant="secondary" class="btn btn-secondary btn-sm" onClick={handleClose}>
@@ -291,4 +332,4 @@ let Question = () => {
     )
 }
 
-export default Question;
+export default Score;
