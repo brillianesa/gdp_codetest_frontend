@@ -27,18 +27,18 @@ const User = () => {
     const [account, setAccount] = useState("");
     const [ account_id, setAccountID ] = useState(0);
     const [role, setRole] = useState([]);
-    const [role_id, setRoleID] = useState(0)
+    const [role_id, setRoleID] = useState(1)
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
     const [test, setTest] = useState([]);
-    const [ test_id, setTestID ] = useState(0);
+    const [ test_id, setTestID ] = useState(1);
     const [ user, setUser ] = useState([]);
     const [ user_id, setUserID ]= useState(0);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const adminInfo = axios.get("http://localhost:8089/api/user/1001");
+    const adminInfo = axios.get("http://localhost:8089/api/user/1");
 
     adminInfo.then((response) => {
           setAdminData(response.data.data)
@@ -126,6 +126,7 @@ const User = () => {
         }).then((response) => {
             if (response.data.status === 200) {
                 console.log(response);
+                console.log(requestData)
                 setStatus(true);
             }
         }).catch((error) => {

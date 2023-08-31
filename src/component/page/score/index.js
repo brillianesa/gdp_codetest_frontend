@@ -50,6 +50,7 @@ let Score = () => {
     const handleShow = () => setShow(true);
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
+    
     const adminInfo = axios.get("http://localhost:8089/api/user/1");
 
     adminInfo.then((response) => {
@@ -143,13 +144,45 @@ let Score = () => {
             handleShow();
       }
 
+     
+
       const handleTextClick = score_id => e => {
   
         dataScore
           .filter(br => br.score_id === score_id)
           .forEach(item => {
             item.score = e.target.value;
+
             
+            let requestData = {
+                "score_id" : item.score_id,
+                "account" : {
+                "account_id": item.account.account_id,
+                },
+                "question": {
+                    "question_id": item.question.question_id,
+                },
+                "score": item.score,
+                "useranswer": item.useranswer
+            }
+            axios({
+                method: editData ? "POST" : "POST",
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                url: "http://localhost:8089/api/score/",
+                data: JSON.stringify(requestData)
+              }).then((response) => {
+                if (response.data.status === 200) {
+                  setStatus(true);
+                  console.log(requestData);
+                }
+              }).catch((error) => {
+                console.log(error);
+              }).finally(() => {
+                setStatus(false);
+                setEditData(null);
+              });
           });
 
         console.log(dataScore);
@@ -239,7 +272,7 @@ let Score = () => {
                             <td>{x.user_id}</td>
                           <td>{x.fullname}</td>
                           <td>{x.test?.name}</td>
-                          <td>{x.isCompleted ? "Completed" : "Not Yet"}</td>
+                          <td>{x.iscompleted ? "Completed" : "Not Yet"}</td>
                             <td><button onClick={() => handleEdit(x.user_id)}>View</button></td>
                         </tr>
                     )
@@ -284,7 +317,7 @@ let Score = () => {
         </table>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" class="btn btn-primary btn-sm" onClick={onSubmit}>
+                <Button variant="primary" class="btn btn-primary btn-sm" onClick={handleClose}>
                 Save
                 </Button>
                 <Button variant="secondary" class="btn btn-secondary btn-sm" onClick={handleClose}>
