@@ -34,6 +34,10 @@ let UserTest = (props) => {
     const [ userData, setUserData ] = useState([{}])
     const [ show, setShow ] = useState(false)
     
+    const [ confirm, setConfirm ] = useState(false)
+    const handleExit = () => setConfirm(false)
+    const handleShowConfirm = () => setConfirm(true);
+
     const [ correctAnswer, setCorrectAnswer ] = useState("")
     const [ image, setImage ] = useState("")
     const handleClose = () => setShow(false);
@@ -44,6 +48,7 @@ let UserTest = (props) => {
     const[score, setScore] = useState([{}]);
     const[score_id, setScoreID] = useState(0);
     const[account_id, setAccountID] = useState(0);
+    const[user_id, setUserID] = useState(0);
     const [useranswer, setUserAnswer] = useState("");
     const [ question, setQuestion ] = useState([{}]);
     const [ question_id, setQuestionID ] = useState(0)
@@ -122,6 +127,46 @@ let UserTest = (props) => {
           });
     }
 
+      const onConfirm = () => {
+        let requestData = {
+          "user_id" : userData.user_id,
+          "fullname": userData.fullname,
+          "dateofbirth": userData.dateofbirth,
+          "address": userData.address,
+          "phonenumber": userData.phonenumber,
+          "gender": userData.gender,
+          "iscompleted": completeTest,
+          "test" : {
+            "test_id": userData?.test?.test_id,
+            }
+        }
+
+        axios({
+            method: "POST",
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            url: "http://localhost:8089/api/user/",
+            data: JSON.stringify(requestData)
+          }).then((response) => {
+            if (response.data.status === 200) {
+              console.log(requestData);
+              setStatus(true);
+            }
+          }).catch((error) => {
+            console.log(requestData)
+            console.log(error);
+          }).finally(() => {
+            setStatus(false);
+          });
+      }
+
+      const handleConfirm = () => {
+        setCompleteTest(true);
+        setRefNumber(4);
+        handleShowConfirm();
+      }
+
       const handleEdit = (rowData) => {
         setEditData(rowData);
         setImage(rowData.question.image);
@@ -196,11 +241,60 @@ let UserTest = (props) => {
                 
                 <td>
                 <button onClick={() => handleEdit(data[refNumber])} class="btn btn-outline-primary btn-sm">Answer</button>
-                <button onClick={() => refNumber < 4 ? setRefNumber(refNumber+1) : setRefNumber(4)} style={{float: "right"}} class="btn btn-outline-success btn-sm">Next</button>
+                <button onClick={() => refNumber < 4 ? setRefNumber(refNumber+1) : handleConfirm()} style={{float: "right"}} class="btn btn-outline-success btn-sm">Next</button>
                 </td>
               </tr>
             </tbody>
         </table>
+
+        <Modal show={confirm} onHide={handleExit}>
+          <Modal.Header closeButton>
+            <Modal.Title>
+              <b>Please confirm your answers</b>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div>
+              <img src={data[0]?.question?.image} width="100%"/>
+              <br />
+              <b>{data[0]?.question?.questiondetail}</b>
+              <br />
+              <u>{data[0]?.useranswer}</u>
+              <br /><br />
+              <img src={data[1]?.question?.image} width="100%"/>
+              <br />
+              <b>{data[1]?.question?.questiondetail}</b>
+              <br />
+              <u>{data[1]?.useranswer}</u>
+              <br /><br />
+              <img src={data[2]?.question?.image} width="100%"/>
+              <br />
+              <b>{data[2]?.question?.questiondetail}</b>
+              <br />
+              <u>{data[2]?.useranswer}</u>
+              <br /><br />
+              <img src={data[3]?.question?.image} width="100%"/>
+              <br />
+              <b>{data[3]?.question?.questiondetail}</b>
+              <br />
+              <u>{data[3]?.useranswer}</u>
+              <br /><br />
+              <img src={data[4]?.question?.image} width="100%"/>
+              <br />
+              <b>{data[4]?.question?.questiondetail}</b>
+              <br />
+              <u>{data[4]?.useranswer}</u>
+            </div>
+          </Modal.Body>
+          <Modal.Footer>
+                <Button variant="primary" class="btn btn-primary btn-sm" onClick={() => {onConfirm()}} href="/result">
+                Submit
+                </Button>
+                <Button variant="secondary" class="btn btn-secondary btn-sm" onClick={handleExit}>
+                Close
+                </Button>
+            </Modal.Footer>
+        </Modal>
 
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
