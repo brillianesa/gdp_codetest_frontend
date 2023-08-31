@@ -53,21 +53,19 @@ let UserTest = (props) => {
     const [ test, setTest ] = useState([{}]);
     const [ test_id, setTestID ] = useState(0);
 
-    //Used to move to the next / previous question page
     const [refNumber, setRefNumber] = useState(0);
 
-    const userInfo = axios.get("http://localhost:8089/api/user/35");
+    const userInfo = axios.get("http://localhost:8089/api/user/78");
     
 
     userInfo.then((response) => {
           setUserData(response.data.data)
-          // console.log(userData?.test?.test_id);
       })
 
       useEffect(() => {
         axios({
             method: "GET",
-            url: "http://localhost:8089/api/score/account/35"
+            url: "http://localhost:8089/api/score/account/78"
         }).then((response) => {
             setData(response.data.data)
             console.log()

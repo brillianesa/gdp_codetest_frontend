@@ -12,6 +12,8 @@ import Question from './component/page/question';
 import UserTest from './component/template/usertest';
 import User from './component/page/user';
 import Test from './component/test';
+import Login from './component/page/login';
+import Role from './component/page/role';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -26,6 +28,8 @@ root.render(
         <Route path="/admin/question" element={<Question/>}/>
         <Route path="/admin/test" element={<Test/>}/>
         <Route path="/user" element={<UserTest/>}/>
+        <Route path="/login" element={<Login/>}></Route>
+        <Route path="/admin/role" element={<Role/>}></Route>
         <Route index element={<Home/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>

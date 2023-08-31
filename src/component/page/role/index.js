@@ -42,7 +42,7 @@ let Role = () => {
     const handleShow = () => setShow(true);
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
-    const adminInfo = axios.get("http://localhost:8089/api/user/1");
+    const adminInfo = axios.get("http://localhost:8089/api/user/78");
 
 
     adminInfo.then((response) => {

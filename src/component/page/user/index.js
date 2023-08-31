@@ -26,14 +26,13 @@ const User = () => {
     const [account, setAccount] = useState("");
     const [ account_id, setAccountID ] = useState(0);
     const [role, setRole] = useState([]);
-    const [role_id, setRoleID] = useState(0)
+    const [role_id, setRoleID] = useState(1)
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
     const [test, setTest] = useState([]);
-    const [ test_id, setTestID ] = useState(0);
+    const [ test_id, setTestID ] = useState(1);
     const [ user, setUser ] = useState([]);
     const [ user_id, setUserID ]= useState(0);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -42,6 +41,7 @@ const User = () => {
             method: "GET",
             url: "http://localhost:8089/api/account/"
         }).then((response) => {
+            console.log(response)
             setData(response.data.data);
         }).catch((error) => {
             console.log(error);
@@ -117,6 +117,7 @@ const User = () => {
             data: JSON.stringify(requestData)
         }).then((response) => {
             if (response.data.status === 200) {
+                console.log(requestData);
                 console.log(response);
                 setStatus(true);
             }
@@ -161,6 +162,7 @@ const User = () => {
       };
 
       const handleEdit = (rowData) => {
+        
         setEditData(rowData);
         console.log(rowData);
         console.log(rowData.account_id);
@@ -176,6 +178,7 @@ const User = () => {
         // console.log(rowData.user_id);
         console.log(rowData.user.test.test_id);
         if (rowData) {
+            console.log(rowData)
             setId(rowData.account_id);
             setEmail(rowData.email);
             setPassword(rowData.password);
@@ -217,56 +220,62 @@ const User = () => {
     return (
         <>
         <div>
-            <Navbar collapseOnSelect
-              expand="lg"
-              className="bg-body-tertiary fixed-navbar">
-    <Container>
-      <Navbar.Brand href="/home">
-      <img src="https://www.amartek.id/i/logo/weblogo-amartek.png" height="40"/>
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-      <Navbar.Collapse id="responsive-navbar-nav">
-        <Nav className='justify-content-end' style={{ width: "100%" }}>
-          <Nav.Link href="https://www.amartek.id/">
-              <button type="button" class="btn btn-outline-primary btn-sm"><b>About Us</b></button>
-          </Nav.Link>
-          <Nav.Link href="/">
-              <button type="button" class="btn btn-outline-success btn-sm"><b>Logout</b></button>
-          </Nav.Link>
-          <Nav.Link href="/home">
-              <img src="https://cdn-icons-png.flaticon.com/512/74/74807.png" width="32" height="32" style={{marginTop: "12%", marginLeft: "30%"}} />
-          </Nav.Link>
-        </Nav>
-      </Navbar.Collapse>
-    </Container>
-  </Navbar>
-  </div>
-  <div style={{width: "100%", height: "100%", display: "flex",  position: "absolute"}}>
-    <div style={{width: "30%", height: "100%", paddingTop: "9%", paddingBottom: "1%", backgroundImage: "linear-gradient(grey 44.5%, white 40%, #bfbfbf 100%)", boxShadow: "0px 0px 10px black", textAlign: "center"}}>
-      <img src='https://p7.hiclipart.com/preview/355/848/997/computer-icons-user-profile-google-account-photos-icon-account.jpg' class="rounded-circle center" width="100" height="100"/>
-      <h4 style={{color: "white", paddingTop: "2%", paddingBottom: "6%"}}><b></b></h4>
-      <br />
-        <NavLink to="/admin/user">
-          <button disabled type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
-            Manage User
-          </button>
-        </NavLink><br /><br />
-        <NavLink to="/admin/question">
-          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
-            Manage Question
-          </button>
-        </NavLink><br /><br />
-        <NavLink to="/admin/test">
-          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
-            Manage Test
-          </button>
-        </NavLink><br /><br /><br /><br />
-        <NavLink to="/admin">
-          <button type="button" class="btn btn-danger btn-sm btn-block" style={{width:'70%'}}>
-            Back
-          </button>
-        </NavLink>
-    </div>
+          
+          <Navbar collapseOnSelect
+                  expand="lg"
+                  className="bg-body-tertiary fixed-navbar">
+        <Container>
+          <Navbar.Brand href="/home">
+          <img src="https://www.amartek.id/i/logo/weblogo-amartek.png" height="40"/>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className='justify-content-end' style={{ width: "100%" }}>
+              <Nav.Link href="https://www.amartek.id/">
+                  <button type="button" class="btn btn-outline-primary btn-sm"><b>About Us</b></button>
+              </Nav.Link>
+              <Nav.Link href="/">
+                  <button type="button" class="btn btn-outline-success btn-sm"><b>Logout</b></button>
+              </Nav.Link>
+              <Nav.Link href="/home">
+                  <img src="https://cdn-icons-png.flaticon.com/512/74/74807.png" width="32" height="32" style={{marginTop: "12%", marginLeft: "30%"}} />
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      </div>
+      <div style={{width: "100%", height: "100%", display: "flex",  position: "absolute"}}>
+        <div style={{width: "30%", height: "100%", paddingTop: "9%", paddingBottom: "1%", backgroundImage: "linear-gradient(grey 44.5%, white 40%, #bfbfbf 100%)", boxShadow: "0px 0px 10px black", textAlign: "center"}}>
+          <img src='https://p7.hiclipart.com/preview/355/848/997/computer-icons-user-profile-google-account-photos-icon-account.jpg' class="rounded-circle center" width="100" height="100"/>
+          <h4 style={{color: "white", paddingTop: "2%", paddingBottom: "6%"}}><b></b></h4>
+          <br />
+            <NavLink to="/admin/user">
+              <button disabled type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+                Manage User
+              </button>
+            </NavLink><br /><br />
+            <NavLink to="/admin/role">
+              <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+                Manage Role
+              </button>
+            </NavLink><br /><br />
+            <NavLink to="/admin/question">
+              <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+                Manage Question
+              </button>
+            </NavLink><br /><br />
+            <NavLink to="/admin/test">
+              <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+                Manage Test
+              </button>
+            </NavLink><br /><br /><br /><br />
+            <NavLink to="/admin">
+              <button type="button" class="btn btn-danger btn-sm btn-block" style={{width:'70%'}}>
+                Back
+              </button>
+            </NavLink>
+        </div>
     <div style={{marginTop: '4%', marginLeft: '10px'}}>
 
             <table className="table">
@@ -277,7 +286,7 @@ const User = () => {
                     <th>Fullname</th>
                     <th>Date of Birth</th>
                     <th>Gender</th>
-                    <th>isCompleted</th>
+                    <th>Completion Status</th>
                     <th>Address</th>
                     <th>Phone Number</th>
                     <th>Role</th>
@@ -450,16 +459,6 @@ const User = () => {
                             onChange={(e) => setPhoneNumber(e.target.value)}
                         />
                     </div>
-                    {/* <div>
-                        <label htmlFor="role">Role :</label>
-                        <input
-                            value={role.role_id}
-                            type="text"
-                            id="role"
-                            name="role"
-                            onChange={(e) => setRoleID(e.target.value)}
-                        />
-                    </div> */}
                     <div>
                     <select
                             value={role_id}
