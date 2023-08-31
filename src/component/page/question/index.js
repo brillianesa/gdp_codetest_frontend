@@ -239,7 +239,7 @@ let Question = () => {
                           <td>{x?.test?.test_id}</td>
                             <td>{x.questiondetail}</td>
                             <td>{x.correctanswer}</td>
-                            <td><img src={x.image} width='300px'></img>></td>
+                            <td><img src={x.image} width='300px'></img></td>
                             
                             <td><button onClick={() => handleEdit(x)}>Edit</button> <button onClick={() => handleDelete(x.question_id)}>Delete</button></td>
                         </tr>
