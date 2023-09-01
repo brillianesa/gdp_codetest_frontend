@@ -207,6 +207,11 @@ let Question = () => {
           <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
             Manage Test
           </button>
+        </NavLink><br /><br />
+        <NavLink to="/admin/score">
+          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Score
+          </button>
         </NavLink><br /><br /><br /><br />
         <NavLink to="/admin">
           <button type="button" class="btn btn-danger btn-sm btn-block" style={{width:'70%'}}>
@@ -228,8 +233,8 @@ let Question = () => {
                 <th>Question Detail</th>
                 <th>Answer</th>
                 <th>Image</th>
-                <th style={{width: "20%"}}>Action</th>
-                <th><button onClick={handleShow}>Create</button></th>
+                <th><button style={{height: "30px", width: "100px"}} class="btn btn-outline-success btn-sm" onClick={handleShow}>Create</button></th>
+                
             </thead>
             <tbody>
                 {data.map(x => {

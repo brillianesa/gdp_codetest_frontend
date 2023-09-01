@@ -12,7 +12,7 @@ import Question from './component/page/question';
 import UserTest from './component/template/usertest';
 import User from './component/page/user';
 import Result from './component/template/result';
-import Test from './component/template/test';
+// import Test from './component/template/test';
 import Test from './component/test';
 import Login from './component/page/login';
 import Role from './component/page/role';

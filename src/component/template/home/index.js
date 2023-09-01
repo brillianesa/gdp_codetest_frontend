@@ -66,7 +66,7 @@ let Home = (props) => {
     </Navbar>
     </div>
 
-      <div name="mainpage" style={{backgroundImage: 'url("https://images.unsplash.com/photo-1623479322729-28b25c16b011?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHByb2dyYW1tZXJ8ZW58MHx8MHx8fDA%3D&w=1000&q=80")', backgroundSize: "contain", backgroundSize: "100%", backgroundPositionY: "50%", textAlign: "center", color: "white", width: "100%", height: "50vh", marginTop: "6%"}}>
+      <div  name="mainpage" style={{marginBottom: '20px', backgroundImage: 'url("https://images.unsplash.com/photo-1623479322729-28b25c16b011?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHByb2dyYW1tZXJ8ZW58MHx8MHx8fDA%3D&w=1000&q=80")', backgroundSize: "contain", backgroundSize: "100%", backgroundPositionY: "50%", textAlign: "center", color: "white", width: "100%", height: "50vh", marginTop: "6%"}}>
         <div style={{paddingTop: "7%"}}>
         <h1 style={{textShadow: "0px 0px 20px white"}}>AMARTEK CODE TEST</h1>
         <p>A preliminary test for IT Graduate Development Program</p>
@@ -75,9 +75,9 @@ let Home = (props) => {
         </div>
         <div ref={ref} style={{paddingTop: "5.8%"}}>
         </div>
-        <div style={{width: "70%", height: "100%", backgroundImage: 'url("https://media.discordapp.net/attachments/1107858899463327824/1144102737705963560/tuxpi.com.1692845743.jpg?width=704&height=469")', backgroundSize: "contain", backgroundRepeat: "no-repeat"}}>
+        <div style={{width: "70%", height: "100%", marginTop: '70px',backgroundImage: 'url("https://media.discordapp.net/attachments/1107858899463327824/1144102737705963560/tuxpi.com.1692845743.jpg?width=704&height=469")', backgroundSize: "contain", backgroundRepeat: "no-repeat"}}>
         <br />
-        <h1 style={{color: "black", textAlign: "right"}}>
+        <h1 style={{color: "black", textAlign: "right", marginTop: '60px'}}>
             Exam overview
         </h1>
         <br />

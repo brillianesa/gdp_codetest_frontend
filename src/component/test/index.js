@@ -181,6 +181,11 @@ let Test = () => {
           <button disabled type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
             Manage Test
           </button>
+        </NavLink><br /><br />
+        <NavLink to="/admin/score">
+          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Score
+          </button>
         </NavLink><br /><br /><br /><br />
         <NavLink to="/admin">
           <button type="button" class="btn btn-danger btn-sm btn-block" style={{width:'70%'}}>
@@ -200,8 +205,8 @@ let Test = () => {
                 <th>Test ID</th>
                 <th>Test Name</th>
                 <th>Date Created</th>
-                <th>Action</th>
-                <th><button onClick={handleShow}>Create</button></th>
+                <th><button style={{height: "30px", width: "100px"}} class="btn btn-outline-success btn-sm" onClick={handleShow}>Create</button></th>
+                
             </thead>
             <tbody>
                 {data.map(x => {
@@ -225,7 +230,7 @@ let Test = () => {
             </Modal.Header>
             <Modal.Body>
                 <div>
-                <input placeholder="Test ID" value = {test_id} type="text" id="test_id" name="test_id" onChange={e => setTest_id(e.target.value)}/>
+                <input hidden placeholder="Test ID" value = {test_id} type="text" id="test_id" name="test_id" onChange={e => setTest_id(e.target.value)}/>
                 </div><br />
                 <div>
                 <input placeholder="Detail" value = {name} type="text" id="name" name="name" onChange={e => setName(e.target.value)}/>

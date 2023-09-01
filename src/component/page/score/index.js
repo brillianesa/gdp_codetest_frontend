@@ -224,7 +224,7 @@ let Score = () => {
       <img src='https://p7.hiclipart.com/preview/355/848/997/computer-icons-user-profile-google-account-photos-icon-account.jpg' class="rounded-circle center" width="100" height="100"/>
       <h4 style={{color: "white", paddingTop: "2%", paddingBottom: "6%"}}><b>{adminData.fullname}</b></h4>
       <br />
-        <NavLink to="/admin/user">
+      <NavLink to="/admin/user">
           <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
             Manage User
           </button>
@@ -234,14 +234,19 @@ let Score = () => {
             Manage Role
           </button>
         </NavLink><br /><br />
-        <NavLink to="/admin/score">
-          <button disabled type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
-            Manage Score
+        <NavLink to="/admin/question">
+          <button  type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Question
           </button>
         </NavLink><br /><br />
         <NavLink to="/admin/test">
           <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
             Manage Test
+          </button>
+        </NavLink><br /><br />
+        <NavLink to="/admin/score">
+          <button disabled type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Score
           </button>
         </NavLink><br /><br /><br /><br />
         <NavLink to="/admin">
@@ -273,7 +278,7 @@ let Score = () => {
                           <td>{x.fullname}</td>
                           <td>{x.test?.name}</td>
                           <td>{x.iscompleted ? "Completed" : "Not Yet"}</td>
-                            <td><button onClick={() => handleEdit(x.user_id)}>View</button></td>
+                            <td><button style={{height: "30px", width: "100px"}} class="btn btn-outline-primary btn-sm" onClick={() => handleEdit(x.user_id)}>View</button></td>
                         </tr>
                     )
                 })}
@@ -308,8 +313,7 @@ let Score = () => {
                           <td>{x.useranswer}</td>
                           <td hidden><input  placeholder="Score ID" value = {x.score_id} type="text" id="score_id" name="score_id" onChange={e => setScoreID(e.target.value)}/></td>
                           <td>{
-                <input  placeholder="Score" defaultValue = {x.score} type="text" id="score" name="score" onClick={handleTextClick} onChange={handleTextClick(x.score_id)}/>
-                }</td>
+                <input style={{width: '100%'}} placeholder="Score" defaultValue = {x.score} type="text" id="score" name="score" onClick={handleTextClick} onChange={handleTextClick(x.score_id)}/>}</td>
                         </tr>
                     )
                 })}
