@@ -21,6 +21,7 @@ import {
     MDBRow,
     MDBBtn
   } from 'mdb-react-ui-kit';
+import axios from 'axios'
 
 import "./index.css"
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -29,12 +30,18 @@ import 'mdbreact/dist/css/mdb.css';
 
 let Home = (props) => {
     const ref = useRef(null);
+    const [ adminData, setAdminData ] = useState([{}])
     const [ show, setShow ] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleClick = () => {
         ref.current?.scrollIntoView({ behavior: 'smooth' });
     };
+    const adminInfo = axios.get("http://localhost:8089/api/user/1001");
+
+    adminInfo.then((response) => {
+          setAdminData(response.data.data)
+      })
 
     return (
         <>
@@ -189,6 +196,9 @@ let Home = (props) => {
                 </Button>
                 <Button variant="secondary" href="/user" className='btn-sm'>
                 <b>Test Taker</b>
+                </Button>
+                <Button variant="info" href="/result" className='btn-sm'>
+                <b>Result</b>
                 </Button>
                 </div>
             </Modal.Body>
