@@ -229,6 +229,7 @@ let Question = () => {
                 <th>Answer</th>
                 <th>Image</th>
                 <th style={{width: "20%"}}>Action</th>
+                <th><button onClick={handleShow}>Create</button></th>
             </thead>
             <tbody>
                 {data.map(x => {
@@ -238,7 +239,7 @@ let Question = () => {
                           <td>{x?.test?.test_id}</td>
                             <td>{x.questiondetail}</td>
                             <td>{x.correctanswer}</td>
-                            <td>{x.image}</td>
+                            <td><img src={x.image} width={'300'}></img></td>
                             <td><button onClick={() => handleEdit(x)}>Edit</button> <button onClick={() => handleDelete(x.question_id)}>Delete</button></td>
                         </tr>
                     )
