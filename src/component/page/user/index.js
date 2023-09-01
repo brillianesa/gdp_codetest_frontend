@@ -38,7 +38,7 @@ const User = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const adminInfo = axios.get("http://localhost:8089/api/user/1001");
+    const adminInfo = axios.get("http://localhost:8089/api/user/78");
 
     adminInfo.then((response) => {
           setAdminData(response.data.data)
@@ -273,6 +273,11 @@ const User = () => {
           <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
             Manage Test
           </button>
+        </NavLink><br /><br />
+        <NavLink to="/admin/score">
+          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Score
+          </button>
         </NavLink><br /><br /><br /><br />
         <NavLink to="/admin">
           <button type="button" class="btn btn-danger btn-sm btn-block" style={{width:'70%'}}>
@@ -301,7 +306,7 @@ const User = () => {
                     <th>Role</th>
                     <th>Test</th>
                     <th>
-                        Action
+                    <button style={{height: "30px", width: "100px"}} class="btn btn-outline-success btn-sm" onClick={handleShow}>CREATE</button>
                     </th>
                 </thead>
                 
@@ -326,7 +331,7 @@ const User = () => {
                             </td>
                         </tr>
                     ))}
-                <button style={{height: "30px", width: "100px"}} class="btn btn-outline-success btn-sm" onClick={handleShow}>CREATE</button>
+               
                 </tbody>
                 {/* <tbody>
                     {user.map(user => (

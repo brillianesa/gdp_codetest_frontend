@@ -1,10 +1,13 @@
 import {  useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+
 function Login() {
    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [ role, setRole ] = useState([])
+    const [ role_id, setRoleID ] = useState(0)
     const navigate = useNavigate();
     async function login(event) {
         event.preventDefault();
@@ -16,21 +19,21 @@ function Login() {
             {
              console.log(res.data);
              
-             if (res.data.message == "Email not exits") 
+             if (res.data.message == "Email not exist") 
              {
-               alert("Email not exits");
+               alert("Email not exist");
              } 
-             else if(res.data.message == "account has been login")
+             else if(res.data.message == "Signed in")
              { 
                 
-                navigate('/landing');
+                navigate('/admin');
              } 
               else 
              { 
                 alert("Incorrect Email and Password not match");
              }
           }, fail => {
-           console.error(fail); // Error!
+           console.error(fail);
   });
         }
  
@@ -63,7 +66,7 @@ function Login() {
         </div>
         <div class="form-group">
             <label>password</label>
-            <input type="password"  class="form-control" id="password" placeholder="Enter Fee"
+            <input type="password"  class="form-control" id="password" placeholder="Enter Password"
             
             value={password}
             onChange={(event) => {
