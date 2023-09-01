@@ -47,7 +47,7 @@ let Question = () => {
     const handleShow = () => setShow(true);
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
-    const adminInfo = axios.get("http://localhost:8089/api/user/1");
+    const adminInfo = axios.get("http://localhost:8089/api/user/78");
 
     const onChangeTest = e => setTest(e.target.value);
 
@@ -207,6 +207,11 @@ let Question = () => {
           <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
             Manage Test
           </button>
+        </NavLink><br /><br />
+        <NavLink to="/admin/score">
+          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Score
+          </button>
         </NavLink><br /><br /><br /><br />
         <NavLink to="/admin">
           <button type="button" class="btn btn-danger btn-sm btn-block" style={{width:'70%'}}>
@@ -228,8 +233,8 @@ let Question = () => {
                 <th>Question Detail</th>
                 <th>Answer</th>
                 <th>Image</th>
-                <th style={{width: "20%"}}>Action</th>
-                <th><button onClick={handleShow}>Create</button></th>
+                <th><button style={{height: "30px", width: "100px"}} class="btn btn-outline-success btn-sm" onClick={handleShow}>Create</button></th>
+                
             </thead>
             <tbody>
                 {data.map(x => {
@@ -239,7 +244,8 @@ let Question = () => {
                           <td>{x?.test?.test_id}</td>
                             <td>{x.questiondetail}</td>
                             <td>{x.correctanswer}</td>
-                            <td><img src={x.image} width={'300'}></img></td>
+                            <td><img src={x.image} width='300px'></img></td>
+                            
                             <td><button onClick={() => handleEdit(x)}>Edit</button> <button onClick={() => handleDelete(x.question_id)}>Delete</button></td>
                         </tr>
                     )
@@ -255,7 +261,7 @@ let Question = () => {
             </Modal.Header>
             <Modal.Body>
                 <div>
-                <input placeholder="Question ID" value = {question_id} type="text" id="question_id" name="question_id" onChange={e => setQuestion_id(e.target.value)}/>
+                <input hidden placeholder="Question ID" value = {question_id} type="text" id="question_id" name="question_id" onChange={e => setQuestion_id(e.target.value)}/>
                 </div><br />
                 <div>
                         <select id='test_id' onChange={e => setTestId(e.target.value)} value={test_id}>

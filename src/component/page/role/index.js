@@ -42,7 +42,7 @@ let Role = () => {
     const handleShow = () => setShow(true);
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
-    const adminInfo = axios.get("http://localhost:8089/api/user/1");
+    const adminInfo = axios.get("http://localhost:8089/api/user/78");
 
 
     adminInfo.then((response) => {
@@ -179,6 +179,11 @@ let Role = () => {
           <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
             Manage Test
           </button>
+        </NavLink><br /><br />
+        <NavLink to="/admin/score">
+          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Score
+          </button>
         </NavLink><br /><br /><br /><br />
         <NavLink to="/admin">
           <button type="button" class="btn btn-danger btn-sm btn-block" style={{width:'70%'}}>
@@ -198,8 +203,8 @@ let Role = () => {
             <thead>
                 <th>Role ID</th>
                 <th>Name</th>
-                <th>Action</th>
-                <th><button onClick={handleShow}>Create</button></th>
+                <th><button style={{height: "30px", width: "100px"}} class="btn btn-outline-success btn-sm" onClick={handleShow}>Create</button></th>
+
             </thead>
             <tbody>
                 {data.map(x => {
@@ -207,7 +212,7 @@ let Role = () => {
                         <tr key={x.role_id}>
                           <td>{x.role_id}</td>
                             <td>{x.name}</td>
-                            <td><button onClick={() => handleEdit(x)}>Edit</button> <button onClick={() => handleDelete(x.role_id)}>Delete</button></td>
+                            <td><button style={{height: "30px", width: "100px"}} class="btn btn-outline-primary btn-sm" onClick={() => handleEdit(x)}>Edit</button> <button style={{height: "30px", width: "100px"}} class="btn btn-outline-danger btn-sm"onClick={() => handleDelete(x.role_id)}>Delete</button></td>
                         </tr>
                     )
                 })}

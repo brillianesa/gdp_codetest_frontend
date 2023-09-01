@@ -21,6 +21,7 @@ import {
     MDBRow,
     MDBBtn
   } from 'mdb-react-ui-kit';
+import axios from 'axios'
 
 import "./index.css"
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -29,12 +30,18 @@ import 'mdbreact/dist/css/mdb.css';
 
 let Home = (props) => {
     const ref = useRef(null);
+    const [ adminData, setAdminData ] = useState([{}])
     const [ show, setShow ] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleClick = () => {
         ref.current?.scrollIntoView({ behavior: 'smooth' });
     };
+    const adminInfo = axios.get("http://localhost:8089/api/user/1001");
+
+    adminInfo.then((response) => {
+          setAdminData(response.data.data)
+      })
 
     return (
         <>
@@ -66,7 +73,7 @@ let Home = (props) => {
     </Navbar>
     </div>
 
-      <div name="mainpage" style={{backgroundImage: 'url("https://images.unsplash.com/photo-1623479322729-28b25c16b011?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHByb2dyYW1tZXJ8ZW58MHx8MHx8fDA%3D&w=1000&q=80")', backgroundSize: "contain", backgroundSize: "100%", backgroundPositionY: "50%", textAlign: "center", color: "white", width: "100%", height: "50vh", marginTop: "6%"}}>
+      <div  name="mainpage" style={{marginBottom: '20px', backgroundImage: 'url("https://images.unsplash.com/photo-1623479322729-28b25c16b011?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHByb2dyYW1tZXJ8ZW58MHx8MHx8fDA%3D&w=1000&q=80")', backgroundSize: "contain", backgroundSize: "100%", backgroundPositionY: "50%", textAlign: "center", color: "white", width: "100%", height: "50vh", marginTop: "6%"}}>
         <div style={{paddingTop: "7%"}}>
         <h1 style={{textShadow: "0px 0px 20px white"}}>AMARTEK CODE TEST</h1>
         <p>A preliminary test for IT Graduate Development Program</p>
@@ -75,9 +82,9 @@ let Home = (props) => {
         </div>
         <div ref={ref} style={{paddingTop: "5.8%"}}>
         </div>
-        <div style={{width: "70%", height: "100%", backgroundImage: 'url("https://media.discordapp.net/attachments/1107858899463327824/1144102737705963560/tuxpi.com.1692845743.jpg?width=704&height=469")', backgroundSize: "contain", backgroundRepeat: "no-repeat"}}>
+        <div style={{width: "70%", height: "100%", marginTop: '70px',backgroundImage: 'url("https://media.discordapp.net/attachments/1107858899463327824/1144102737705963560/tuxpi.com.1692845743.jpg?width=704&height=469")', backgroundSize: "contain", backgroundRepeat: "no-repeat"}}>
         <br />
-        <h1 style={{color: "black", textAlign: "right"}}>
+        <h1 style={{color: "black", textAlign: "right", marginTop: '60px'}}>
             Exam overview
         </h1>
         <br />
@@ -189,6 +196,9 @@ let Home = (props) => {
                 </Button>
                 <Button variant="secondary" href="/user" className='btn-sm'>
                 <b>Test Taker</b>
+                </Button>
+                <Button variant="info" href="/result" className='btn-sm'>
+                <b>Result</b>
                 </Button>
                 </div>
             </Modal.Body>

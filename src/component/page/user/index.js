@@ -27,18 +27,18 @@ const User = () => {
     const [account, setAccount] = useState("");
     const [ account_id, setAccountID ] = useState(0);
     const [role, setRole] = useState([]);
-    const [role_id, setRoleID] = useState(1)
+    const [role_id, setRoleID] = useState(0)
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
     const [test, setTest] = useState([]);
-    const [ test_id, setTestID ] = useState(1);
+    const [ test_id, setTestID ] = useState(0);
     const [ user, setUser ] = useState([]);
     const [ user_id, setUserID ]= useState(0);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const adminInfo = axios.get("http://localhost:8089/api/user/1");
+    const adminInfo = axios.get("http://localhost:8089/api/user/78");
 
     adminInfo.then((response) => {
           setAdminData(response.data.data)
@@ -126,7 +126,6 @@ const User = () => {
         }).then((response) => {
             if (response.data.status === 200) {
                 console.log(response);
-                console.log(requestData)
                 setStatus(true);
             }
         }).catch((error) => {
@@ -274,6 +273,11 @@ const User = () => {
           <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
             Manage Test
           </button>
+        </NavLink><br /><br />
+        <NavLink to="/admin/score">
+          <button type="button" class="btn btn-primary btn-sm btn-block" style={{width:'70%'}}>
+            Manage Score
+          </button>
         </NavLink><br /><br /><br /><br />
         <NavLink to="/admin">
           <button type="button" class="btn btn-danger btn-sm btn-block" style={{width:'70%'}}>
@@ -302,7 +306,7 @@ const User = () => {
                     <th>Role</th>
                     <th>Test</th>
                     <th>
-                        Action
+                    <button style={{height: "30px", width: "100px"}} class="btn btn-outline-success btn-sm" onClick={handleShow}>CREATE</button>
                     </th>
                 </thead>
                 
@@ -327,7 +331,7 @@ const User = () => {
                             </td>
                         </tr>
                     ))}
-                <button style={{height: "30px", width: "100px"}} class="btn btn-outline-success btn-sm" onClick={handleShow}>CREATE</button>
+               
                 </tbody>
                 {/* <tbody>
                     {user.map(user => (
