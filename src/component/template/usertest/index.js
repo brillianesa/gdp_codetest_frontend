@@ -60,7 +60,7 @@ let UserTest = (props) => {
     const [refNumber, setRefNumber] = useState(0);
     const [ completeTest, setCompleteTest ] = useState("");
 
-    const userInfo = axios.get("http://localhost:8089/api/user/78");
+    const userInfo = axios.get("http://localhost:8089/api/user/35");
     
 
     userInfo.then((response) => {
@@ -70,7 +70,7 @@ let UserTest = (props) => {
       useEffect(() => {
         axios({
             method: "GET",
-            url: "http://localhost:8089/api/score/account/78"
+            url: "http://localhost:8089/api/score/account/35"
         }).then((response) => {
             setData(response.data.data)
             console.log()

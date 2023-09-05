@@ -51,7 +51,7 @@ let Score = () => {
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
     
-    const adminInfo = axios.get("http://localhost:8089/api/user/78");
+    const adminInfo = axios.get("http://localhost:8089/api/user/35");
 
     adminInfo.then((response) => {
           setAdminData(response.data.data)

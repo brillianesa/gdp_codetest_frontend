@@ -38,7 +38,7 @@ const User = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const adminInfo = axios.get("http://localhost:8089/api/user/78");
+    const adminInfo = axios.get("http://localhost:8089/api/user/35");
 
     adminInfo.then((response) => {
           setAdminData(response.data.data)

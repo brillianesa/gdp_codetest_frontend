@@ -40,7 +40,7 @@ let Admin = (props) => {
     const handleClick = () => {
         ref.current?.scrollIntoView({ behavior: 'smooth' });
     };
-    const adminInfo = axios.get("http://localhost:8089/api/user/78");
+    const adminInfo = axios.get("http://localhost:8089/api/user/35");
     adminInfo.then((response) => {
       setAdminData(response.data.data)
       console.log()

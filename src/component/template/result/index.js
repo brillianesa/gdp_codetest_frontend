@@ -33,7 +33,7 @@ let UserResult = (props) => {
     const [ data, setData ] = useState([{}])
     const [ userData, setUserData ] = useState([{}])
 
-    const userInfo = axios.get("http://localhost:8089/api/user/78");
+    const userInfo = axios.get("http://localhost:8089/api/user/35");
     const totalScore = data[0]?.score + data[1]?.score + data[2]?.score + data[3]?.score + data[4]?.score;
 
     userInfo.then((response) => {
@@ -44,7 +44,7 @@ let UserResult = (props) => {
       useEffect(() => {
         axios({
             method: "GET",
-            url: "http://localhost:8089/api/score/account/78"
+            url: "http://localhost:8089/api/score/account/35"
         }).then((response) => {
             setData(response.data.data)
             console.log()

@@ -47,7 +47,7 @@ let Question = () => {
     const handleShow = () => setShow(true);
     const [ status, setStatus ] = useState(false);
     const [editData, setEditData] = useState(null);
-    const adminInfo = axios.get("http://localhost:8089/api/user/78");
+    const adminInfo = axios.get("http://localhost:8089/api/user/35");
 
     const onChangeTest = e => setTest(e.target.value);
 
