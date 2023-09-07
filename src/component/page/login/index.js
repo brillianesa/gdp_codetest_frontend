@@ -26,7 +26,7 @@ function Login() {
              else if(res.data.message == "Signed in")
              { 
                 
-                navigate('/admin');
+                navigate('/home');
              } 
               else 
              { 
