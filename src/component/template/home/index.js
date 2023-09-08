@@ -31,6 +31,7 @@ let Home = (props) => {
     const ref = useRef(null);
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
+    const [ userRole, setRole ] = useState(0);
     const [ adminData, setAdminData ] = useState([{}]);
     const [ show, setShow ] = useState(false);
     const [ status, setStatus ] = useState(false);
@@ -39,7 +40,7 @@ let Home = (props) => {
     const handleClick = () => {
         ref.current?.scrollIntoView({ behavior: 'smooth' });
     };
-    const adminInfo = axios.get("http://localhost:8089/api/user/1001");
+    const adminInfo = axios.get("http://localhost:8089/api/account/1001");
 
     adminInfo.then((response) => {
           setAdminData(response.data.data)
@@ -90,8 +91,8 @@ let Home = (props) => {
             <Nav.Link href="https://www.amartek.id/">
                 <button type="button" class="btn btn-outline-primary btn-sm"><b>About Us</b></button>
             </Nav.Link>
-            <Nav.Link href="">
-                <button type="button" onClick={handleShow} class="btn btn-outline-success btn-sm"><b>Login</b></button>
+            <Nav.Link href={adminData.role_id = 2001 ? "" : "/user"}>
+                <button type="button" onClick={handleShow} class="btn btn-outline-success btn-sm"><b>{adminData.role_id = 2001 ? "Login" : "Take Test"}</b></button>
             </Nav.Link>
             <Nav.Link href="home">
                 <img src="https://cdn-icons-png.flaticon.com/512/74/74807.png" width="32" height="32" style={{marginTop: "12%", marginLeft: "30%"}} />
@@ -106,7 +107,7 @@ let Home = (props) => {
         <div style={{paddingTop: "7%"}}>
         <h1 style={{textShadow: "0px 0px 20px white"}}>AMARTEK CODE TEST</h1>
         <p>A preliminary test for IT Graduate Development Program</p>
-        <Button href="/user" variant="primary" className="mr-3 btn-sm" style={{marginRight: "0.25%"}}><b>Take an exam</b></Button>
+        <Button href={!adminData.iscomplete ? "/user" : "/result"} variant="primary" className="mr-3 btn-sm" style={{marginRight: "0.25%"}}><b>Take an exam</b></Button>
         <Button onClick={handleClick} variant="secondary" className='btn-sm' style={{marginLeft: "0.25%"}}><b>Learn More</b></Button>
         </div>
         <div ref={ref} style={{paddingTop: "5.8%"}}>
@@ -244,7 +245,7 @@ let Home = (props) => {
             </div>
             </Modal.Body>
             <Modal.Footer>
-            <Button variant="primary" class="btn btn-primary btn-sm" onClick={login}>
+            <Button variant="primary" class="btn btn-primary btn-sm" onClick={login} href={adminData.role_id = 2001 ? "/admin" : "/home"}>
                 Login
                 </Button>
                 <Button variant="secondary" class="btn btn-secondary btn-sm" onClick={handleClose}>
