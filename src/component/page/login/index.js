@@ -1,95 +1,87 @@
-import React, { useState } from 'react'
-import { NavLink, Navigate } from 'react-router-dom'
-import { Button, Form, Grid, Segment, Message } from 'semantic-ui-react'
-import { useAuth } from '../../context/AuthContext'
-import { TestApi } from '../../misc/TestApi'
-import { parseJwt, handleLogError } from '../../misc/Helpers'
+import {  useState } from "react";
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
-function Login()  {
-  const Auth = useAuth()
-  const isLoggedIn = Auth.userIsAuthenticated()
-
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isError, setIsError] = useState(false)
-
-  const handleInputChange = (e, { name, value }) => {
-    if (name === 'email') {
-      setEmail(value)
-    } else if (name === 'password') {
-      setPassword(value)
-    }
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    if (!(email && password)) {
-      setIsError(true)
-      return
-    }
-
-    try {
-      const response = await TestApi.authenticate(email, password)
-      const { accessToken } = response.data
-      const data = parseJwt(accessToken)
-      const authenticatedUser = { data, accessToken }
-
-      Auth.userLogin(authenticatedUser)
-
+function Login() {
+   
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [ role, setRole ] = useState([])
+    const [ role_id, setRoleID ] = useState(0)
+    const navigate = useNavigate();
+    async function login(event) {
+        event.preventDefault();
+        try {
+          await axios.post("http://localhost:8089/api/account/login", {
+            email: email,
+            password: password,
+            }).then((res) => 
+            {
+             console.log(res.data);
+             
+             if (res.data.message == "Email not exist") 
+             {
+               alert("Email not exist");
+             } 
+             else if(res.data.message == "Signed in")
+             { 
+                
+                navigate('/home');
+             } 
+              else 
+             { 
+                alert("Incorrect Email and Password not match");
+             }
+          }, fail => {
+           console.error(fail);
+  });
+        }
+ 
+         catch (err) {
+          alert(err);
+        }
       
-      
-
-      setEmail('')
-      setPassword('')
-      setIsError(false)
-      console.log(authenticatedUser)
-    } catch (error) {
-      
-      handleLogError(error)
-      setIsError(true)
-    }
-  }
-
-  if (isLoggedIn) {
-    return <Navigate to={'/'} />
-  }
-
-  return (
-    <Grid textAlign='center'>
-      <Grid.Column style={{ maxWidth: 450 }}>
-        <Form size='large' onSubmit={handleSubmit}>
-          <Segment>
-            <Form.Input
-              fluid
-              autoFocus
-              name='email'
-              icon='user'
-              iconPosition='left'
-              placeholder='Email'
-              value={email}
-              onChange={handleInputChange}
+      }
+    return (
+       <div>
+            <div class="container">
+            <div class="row">
+                <h2>Login</h2>
+             <hr/>
+             </div>
+             <div class="row">
+             <div class="col-sm-6">
+ 
+            <form>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email"  class="form-control" id="email" placeholder="Enter Name"
+          
+          value={email}
+          onChange={(event) => {
+            setEmail(event.target.value);
+          }}
+          
+          />
+        </div>
+        <div class="form-group">
+            <label>password</label>
+            <input type="password"  class="form-control" id="password" placeholder="Enter Password"
+            
+            value={password}
+            onChange={(event) => {
+              setPassword(event.target.value);
+            }}
+            
             />
-            <Form.Input
-              fluid
-              name='password'
-              icon='lock'
-              iconPosition='left'
-              placeholder='Password'
-              type='password'
-              value={password}
-              onChange={handleInputChange}
-            />
-            <Button color='violet' fluid size='large'>Login</Button>
-          </Segment>
-        </Form>
-        <Message>{`Don't have already an account? `}
-          <NavLink to="/signup" color='violet' as={NavLink}>Sign Up</NavLink>
-        </Message>
-        {isError && <Message negative>The email or password provided are incorrect!</Message>}
-      </Grid.Column>
-    </Grid>
-  )
-}
-
-export default Login
+          </div>
+                  <button type="submit" class="btn btn-primary" onClick={login} >Login</button>
+              </form>
+            </div>
+            </div>
+            </div>
+     </div>
+    );
+  }
+  
+  export default Login;
