@@ -1,15 +1,8 @@
 import {  useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import { useAuth } from '../../context/AuthContext'
-import { TestApi } from '../../misc/TestApi'
-import { parseJwt, handleLogError } from '../../misc/Helpers'
-
 
 function Login() {
-
-  const Auth = useAuth()
-  const isLoggedIn = Auth.userIsAuthenticated()
    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -25,12 +18,6 @@ function Login() {
             }).then((res) => 
             {
              console.log(res.data);
-
-             const { accessToken } = res.data
-             const data = parseJwt(accessToken)
-             const authenticatedUser = { data, accessToken }
-       
-             Auth.userLogin(authenticatedUser)
              
              if (res.data.message == "Email not exist") 
              {
@@ -54,47 +41,50 @@ function Login() {
           alert(err);
         }
       
-      }
-    return (
-       <div>
-            <div class="container">
-            <div class="row">
-                <h2>Login</h2>
-             <hr/>
-             </div>
-             <div class="row">
-             <div class="col-sm-6">
- 
-            <form>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email"  class="form-control" id="email" placeholder="Enter Name"
-          
-          value={email}
-          onChange={(event) => {
-            setEmail(event.target.value);
-          }}
-          
-          />
-        </div>
-        <div class="form-group">
-            <label>password</label>
-            <input type="password"  class="form-control" id="password" placeholder="Enter Password"
-            
-            value={password}
-            onChange={(event) => {
-              setPassword(event.target.value);
-            }}
-            
-            />
-          </div>
-                  <button type="submit" class="btn btn-primary" onClick={login} >Login</button>
-              </form>
-            </div>
-            </div>
-            </div>
-     </div>
-    );
+      handleLogError(error)
+      setIsError(true)
+    }
   }
-  
-  export default Login;
+
+  if (isLoggedIn) {
+    return <Navigate to={'/'} />
+  }
+
+  return (
+    <Grid textAlign='center'>
+      <Grid.Column style={{ maxWidth: 450 }}>
+        <Form size='large' onSubmit={handleSubmit}>
+          <Segment>
+            <Form.Input
+              fluid
+              autoFocus
+              name='email'
+              icon='user'
+              iconPosition='left'
+              placeholder='Email'
+              value={email}
+              onChange={handleInputChange}
+            />
+            <Form.Input
+              fluid
+              name='password'
+              icon='lock'
+              iconPosition='left'
+              placeholder='Password'
+              type='password'
+              value={password}
+              onChange={handleInputChange}
+            />
+            <Button color='violet' fluid size='large'>Login</Button>
+          </Segment>
+        </Form>
+        <Message>{`Don't have already an account? `}
+          <NavLink to="/signup" color='violet' as={NavLink}>Sign Up</NavLink>
+        </Message>
+        {isError && <Message negative>The email or password provided are incorrect!</Message>}
+      </Grid.Column>
+    </Grid>
+  )
+}
+
+export default Login
