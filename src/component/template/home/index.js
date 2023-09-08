@@ -22,7 +22,6 @@ import {
     MDBBtn
   } from 'mdb-react-ui-kit';
 import axios from 'axios'
-
 import "./index.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -63,6 +62,8 @@ let Home = (props) => {
       }).then((response) => {
         if (response.data.status === 200) {
           setStatus(true);
+          localStorage.setItem("userInfo", JSON.stringify(response.data.result));
+          console.log(localStorage.getItem("userInfo"));
         }
       }).catch((error) => {
         console.log(error);
@@ -228,9 +229,10 @@ let Home = (props) => {
               }}
               
               />
-            </div>
-            <div class="form-group">
-                <label>password</label>
+
+              <br />
+              
+                <label>Password</label>
                 <input type="password"  class="form-control" id="password" placeholder="Enter Password"
                 
                 value={password}
