@@ -22,7 +22,6 @@ import {
     MDBBtn
   } from 'mdb-react-ui-kit';
 import axios from 'axios'
-
 import "./index.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -30,15 +29,12 @@ import 'mdbreact/dist/css/mdb.css';
 
 let Home = (props) => {
     const ref = useRef(null);
-<<<<<<< HEAD
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
     const [ userRole, setRole ] = useState(0);
     const [ adminData, setAdminData ] = useState([{}]);
-=======
-    const [ adminData, setAdminData ] = useState([{}])
->>>>>>> parent of e498520 (Merge branch 'Vincent' into wip-login-frontend)
     const [ show, setShow ] = useState(false);
+    const [ status, setStatus ] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const handleClick = () => {
@@ -49,6 +45,33 @@ let Home = (props) => {
     adminInfo.then((response) => {
           setAdminData(response.data.data)
       })
+
+    const login = () => {
+      handleClose()
+
+      let requestData = {
+        "email"   : email,
+        "password": password
+      }
+      axios({
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        url: "http://localhost:8089/api/account/login",
+        data: JSON.stringify(requestData)
+      }).then((response) => {
+        if (response.data.status === 200) {
+          setStatus(true);
+          localStorage.setItem("userInfo", JSON.stringify(response.data.result));
+          console.log(localStorage.getItem("userInfo"));
+        }
+      }).catch((error) => {
+        console.log(error);
+      }).finally(() => {
+        setStatus(false);
+      });
+    }
 
     return (
         <>
@@ -197,19 +220,30 @@ let Home = (props) => {
                 </Modal.Title></Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div>
-                <Button variant="primary" href="/admin" className='btn-sm'>
-                <b>Admin</b>
-                </Button>
-                <Button variant="secondary" href="/user" className='btn-sm'>
-                <b>Test Taker</b>
-                </Button>
-                <Button variant="info" href="/result" className='btn-sm'>
-                <b>Result</b>
-                </Button>
-                </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email"  class="form-control" id="email" placeholder="Enter Name"
+              
+              value={email}
+              onChange={(event) => {
+                setEmail(event.target.value);
+              }}
+              
+              />
+
+              <br />
+              
+                <label>Password</label>
+                <input type="password"  class="form-control" id="password" placeholder="Enter Password"
+                
+                value={password}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                }}
+                
+                />
+            </div>
             </Modal.Body>
-<<<<<<< HEAD
             <Modal.Footer>
             <Button variant="primary" class="btn btn-primary btn-sm" onClick={login} href={adminData.role_id = 2001 ? "/admin" : "/home"}>
                 Login
@@ -218,8 +252,6 @@ let Home = (props) => {
                 Close
                 </Button>
             </Modal.Footer>
-=======
->>>>>>> parent of e498520 (Merge branch 'Vincent' into wip-login-frontend)
         </Modal>
         </>
     )
