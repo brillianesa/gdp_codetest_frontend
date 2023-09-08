@@ -1,8 +1,15 @@
 import {  useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import { useAuth } from '../../context/AuthContext'
+import { TestApi } from '../../misc/TestApi'
+import { parseJwt, handleLogError } from '../../misc/Helpers'
+
 
 function Login() {
+
+  const Auth = useAuth()
+  const isLoggedIn = Auth.userIsAuthenticated()
    
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -18,6 +25,12 @@ function Login() {
             }).then((res) => 
             {
              console.log(res.data);
+
+             const { accessToken } = res.data
+             const data = parseJwt(accessToken)
+             const authenticatedUser = { data, accessToken }
+       
+             Auth.userLogin(authenticatedUser)
              
              if (res.data.message == "Email not exist") 
              {
